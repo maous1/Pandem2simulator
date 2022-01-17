@@ -2,6 +2,7 @@
 Voici la commande pour installer le package
 
 ```
+install.packages("devtools")
 devtools::install_github("maous1/Pandem2")
 ```
 
