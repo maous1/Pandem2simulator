@@ -2,13 +2,13 @@
 % Please edit documentation in R/Download_ECDC.R
 \name{Download_ECDC}
 \alias{Download_ECDC}
-\title{Title}
+\title{Upload the files(variant, age_case, vaccination and hospitalisation) to the ecdc}
 \usage{
 Download_ECDC()
 }
 \value{
-
+Upload the files in data/ecdc
 }
 \description{
-Title
+Upload the files(variant, age_case, vaccination and hospitalisation) to the ecdc
 }

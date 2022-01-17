@@ -1,18 +1,25 @@
-#' Title
+#' Simulator: Predict the variant
 #'
 #' @param data
+#' @param start
+#' @param end
 #'
 #' @return
 #' @export
 #' @import tidyverse
-#'
+#' @import class
 #' @examples
-Prediction <- function(data){
+#'
+#'
+Prediction <- function(data,start = "2021-01",end = "2022-01",list_country_code){
+
 
   alldata <- read_csv("data/alldata.csv")
 
+  data = data %>% filter(year_week > start & year_week<end)
+
   # List of all country with corresponding country code
-  list_country_code <- data %>% select(country, country_code) %>% distinct %>% filter(country_code != "BG")
+  #list_country_code <- data %>% select(country_code) %>% distinct %>% filter(country_code != "BG")
 
   # For each country
   stat_allcountry <- data.frame()
@@ -52,8 +59,10 @@ Prediction <- function(data){
   # Save prediction file all countries
   if("age_group"%in%names(data)){
     write.csv(stat_allcountry,"results/prediction/stat_allcountry.csv")
+    return(stat_allcountry)
   }else{
     write.csv(stat_allcountry_hospitalisation,"results/prediction/pred_hospitalisation_variant.csv")
+    return(stat_allcountry_hospitalisation)
   }
 
 

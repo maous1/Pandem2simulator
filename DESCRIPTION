@@ -1,5 +1,5 @@
 Package: Pandem
-Title: Pandem
+Title: Data simulator for Pandem2
 Version: 0.1
 Authors@R: 
     c(person("Maxime", "Bonjean", , "m.bonjean@uclouvain.be", role = c("aut", "cre")),
@@ -8,15 +8,13 @@ Authors@R:
       person("Jerome", "Ambroise", , "jerome.ambroise@uclouvain.be", role = c("aut")),
       person("Jean-Luc", "Gala", , "jean-luc.gala@uclouvain.be", role = c("aut"))
       )
-Description: 
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Description: this package was created for the Pandem2 project.  
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Imports: class, tidyverse
 Suggests: 
     rmarkdown,
     knitr
 VignetteBuilder: knitr
-Depends: class, tidyverse
+Depends: class, tidyverse , lubridate

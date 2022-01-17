@@ -1,12 +1,12 @@
-#' Title
+#' disaggregate variant files
 #'
-#' @return
+#' @return disaggregate data in "data/alldata.csv"
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 Table_data <- function() {
 
-  variants <- read_csv("data/ecdc/variants.csv")
+  variants <- read.csv("data/ecdc/variants.csv")
 
   # rm BG country as no daily cases from ecdc (see below) are not given by age for this country
   variants <- variants %>%
@@ -15,7 +15,6 @@ Table_data <- function() {
   # GISAID and TESSy sources are encoded separately
   # => Merge both sources for non sequenced sequence
   no_sequenced_detected = variants %>%
-    filter(year_week >= data_collected_from) %>%
     select(country_code, year_week,new_cases,number_sequenced)%>%
     distinct()%>%
     group_by(country_code, year_week,new_cases)%>%
@@ -28,7 +27,6 @@ Table_data <- function() {
   # GISAID and TESSy sources are encoded separately
   # => Merge both sources for sequenced sequence
   detected_variants <- variants %>%
-    filter(year_week >= data_collected_from) %>%
     group_by(country_code, year_week, variant) %>%
     summarise(n = max(number_detections_variant)) %>%
     filter(n > 0)
@@ -53,5 +51,5 @@ Table_data <- function() {
 
   # Save final table (alldata)
   write_csv(alldata,"data/alldata.csv")
-
+  return(alldata)
 }

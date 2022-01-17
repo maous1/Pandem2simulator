@@ -2,13 +2,13 @@
 % Please edit documentation in R/Table_case.R
 \name{Table_case}
 \alias{Table_case}
-\title{Title}
+\title{disaggregate case_age files}
 \usage{
 Table_case()
 }
 \value{
-
+disaggregate data in "data/ecdc/age_cases.csv"
 }
 \description{
-Title
+disaggregate case_age files
 }

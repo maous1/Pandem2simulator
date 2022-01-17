@@ -1,9 +1,8 @@
-#' Title
+#' Upload the files(variant, age_case, vaccination and hospitalisation) to the ecdc
 #'
-#' @return
+#' @return Upload the files in data/ecdc
 #' @export
 #'
-#' @import tidyverse
 #' @examples
 Download_ECDC <- function() {
   dir.create("data", showWarnings = FALSE)

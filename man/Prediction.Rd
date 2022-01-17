@@ -2,16 +2,20 @@
 % Please edit documentation in R/Prediction.R
 \name{Prediction}
 \alias{Prediction}
-\title{Title}
+\title{Simulator: Predict the variant}
 \usage{
-Prediction(data)
+Prediction(data, start = "2021-01", end = "2022-01")
 }
 \arguments{
-\item{data}{}
+\item{end}{}
 }
 \value{
 
 }
 \description{
-Title
+Simulator: Predict the variant
+}
+\examples{
+
+
 }

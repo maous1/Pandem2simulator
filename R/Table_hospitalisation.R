@@ -1,16 +1,25 @@
-#' Title
+#' disaggregate hospitalisation files
 #'
-#' @return
+#' @return disaggregate data in "data/ecdc/hospitalisation.csv"
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 Table_hospitalisation <- function() {
 
+  vaccination <- read.csv("data/ecdc/vaccination.csv")
+
+  Population = vaccination %>%
+    select(ReportingCountry,Population)%>%
+    distinct()%>%
+    rename(country_code = ReportingCountry)
+
   hospitalisation <- read_csv("data/ecdc/hospitalisation.csv")
+  data = read_csv("data/ecdc/age_cases.csv")
+  list_country_code <- data %>% select(country, country_code) %>% distinct %>% filter(country_code != "BG")
 
   hospitalisation_detected = hospitalisation %>%
     left_join(list_country_code ,by = "country")%>%
-    filter(year_week >= data_collected_from & indicator == "Weekly new hospital admissions per 100k")%>%
+    filter(indicator == "Weekly new hospital admissions per 100k")%>%
     left_join(Population ,by = "country_code")%>%
     group_by(country_code,year_week)%>%
     summarise(n = (value*Population/100000))
@@ -30,4 +39,5 @@ Table_hospitalisation <- function() {
 
   # Save hospitalisation_data
   write_csv(hospitalisation_data,"data/hospitalisation_data.csv")
+  return(hospitalisation_data)
 }

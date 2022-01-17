@@ -2,13 +2,13 @@
 % Please edit documentation in R/Table_hospitalisation.R
 \name{Table_hospitalisation}
 \alias{Table_hospitalisation}
-\title{Title}
+\title{disaggregate hospitalisation files}
 \usage{
 Table_hospitalisation()
 }
 \value{
-
+disaggregate data in "data/ecdc/hospitalisation.csv"
 }
 \description{
-Title
+disaggregate hospitalisation files
 }

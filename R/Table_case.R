@@ -1,14 +1,13 @@
-#' Title
+#' disaggregate case_age files
 #'
-#' @return
+#' @return disaggregate data in "data/ecdc/age_cases.csv"
 #' @export
-#'
+#' @import tidyverse
 #' @examples
 Table_case <- function() {
   case_ages <- read_csv("data/ecdc/age_cases.csv")
 
   case_ages_detected = case_ages %>%
-    filter(year_week >= data_collected_from)%>%
     select(country_code,year_week,age_group,new_cases)%>%
     filter(new_cases > 0)
 
@@ -27,4 +26,5 @@ Table_case <- function() {
 
   # Save case_age_data
   write_csv(case_age_data,"data/case_age_data.csv")
+  return(case_age_data)
 }

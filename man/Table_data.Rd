@@ -2,13 +2,13 @@
 % Please edit documentation in R/Table_data.R
 \name{Table_data}
 \alias{Table_data}
-\title{Title}
+\title{disaggregate variant files}
 \usage{
 Table_data()
 }
 \value{
-
+disaggregate data in "data/alldata.csv"
 }
 \description{
-Title
+disaggregate variant files
 }
