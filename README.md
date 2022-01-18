@@ -1,12 +1,12 @@
 # Pandem2
-Voici la commande pour installer le package
+Here is the command to install the package
 
 ```
 install.packages("devtools")
 devtools::install_github("maous1/Pandem2")
 ```
 
-Je propose un script pour tester le package
+I propose a script to test the package
 
 ```
 library(Pandem)
