@@ -9,11 +9,11 @@ devtools::install_github("maous1/Pandem2simulator")
 I propose a script to test the package
 
 ```
-library(Pandem)
+library(Pandem2simulator)
 #loading the data
 data("variants_aggregated")
 data("case_aggregated")
-#put the files in the right format
+#formated the files
 case_aggregated_format <- format_case(case_aggregated)
 variants_aggregated_format <- format_variant(variants_aggregated)
 #desaggragated the data
