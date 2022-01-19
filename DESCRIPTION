@@ -17,4 +17,4 @@ Suggests:
     rmarkdown,
     knitr
 VignetteBuilder: knitr
-Depends: class, tidyverse , lubridate
+Depends: class, tidyverse , lubridate ,splitstackshape

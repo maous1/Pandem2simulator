@@ -10,10 +10,16 @@ I propose a script to test the package
 
 ```
 library(Pandem)
-Download_ECDC()
-case = Table_case()
-alldata = Table_data()
-hospitalisation = Table_hospitalisation()
-list_country_code <- case %>% select(country_code) %>% distinct %>% filter(country_code != "BG" & country_code == "BE")
-resultat = Prediction(data = case,start = "2021-30",end = "2021-32",list_country_code = list_country_code)
+#loading the data
+data("variants_aggregated")
+data("case_aggregated")
+#put the files in the right format
+case_aggregated_format <- case_format(case_aggregated)
+variants_aggregated_format <- variant_format(variants_aggregated)
+#desaggragated the data
+case_desaggragated <- desagregation(case_aggregated_format)
+variants_desaggragated <- desagregation(variants_aggregated_format)
+#simulator test on belgium in week 31-2021
+list_country_code = c("BE")
+resultat = simulator_variant(trainset = variants_desaggragated,testset = case_desaggragated,start = "2021-30",end = "2021-32",list_country_code = list_country_code)
 ```
