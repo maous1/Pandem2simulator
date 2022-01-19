@@ -1,4 +1,4 @@
-#' disaggregate case_age files
+#' put the files case in the right format
 #'
 #' @return disaggregate data in "data/ecdc/age_cases.csv"
 #' @export

@@ -1,4 +1,4 @@
-#' Title
+#' desaggragated a data
 #'
 #' @param aggregate
 #'

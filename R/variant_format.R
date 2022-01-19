@@ -1,4 +1,4 @@
-#' disaggregate variant files
+#' put the files variant in the right format
 #'
 #' @return disaggregate data in "data/alldata.csv"
 #' @export

@@ -39,6 +39,8 @@ simulator_variant <- function(trainset , testset,start = "2021-01",end = "2022-0
     test_country$variant <- as.character(pr)
 
     # Concatenate prediction file for all countries
+
+    test_country <- test_country %>% select(-c(year_week_jiter,year_week_num))
     stat_allcountry <- union_all(stat_allcountry, test_country)
 
   }
