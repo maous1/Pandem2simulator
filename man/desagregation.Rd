@@ -2,7 +2,7 @@
 % Please edit documentation in R/desagregation.R
 \name{desagregation}
 \alias{desagregation}
-\title{Title}
+\title{desaggragated a data}
 \usage{
 desagregation(aggregate)
 }
@@ -13,5 +13,5 @@ desagregation(aggregate)
 
 }
 \description{
-Title
+desaggragated a data
 }

@@ -4,7 +4,7 @@
 #' @export
 #' @import tidyverse
 #' @examples
-case_format <- function(case_aggregated) {
+format_case <- function(case_aggregated) {
 
   case_aggregated <- case_aggregated %>%
     select(country_code,year_week,age_group,new_cases)%>%

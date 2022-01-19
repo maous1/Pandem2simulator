@@ -9,11 +9,11 @@ simulator_variant(
   testset,
   start = "2021-01",
   end = "2022-01",
-  list_country_code
+  country_code
 )
 }
 \arguments{
-\item{list_country_code}{}
+\item{country_code}{}
 }
 \value{
 

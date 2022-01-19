@@ -4,12 +4,12 @@
 #' @export
 #' @import tidyverse
 #' @examples
-variant_format <- function(variants) {
+format_variant <- function(variants) {
 
 
   # GISAID and TESSy sources are encoded separately
   # => Merge both sources for non sequenced sequence
-  no_sequenced_detected = variants %>%
+  no_sequenced_detected <- variants %>%
     select(country_code, year_week,new_cases,number_sequenced)%>%
     distinct()%>%
     group_by(country_code, year_week,new_cases)%>%

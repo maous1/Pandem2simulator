@@ -4,7 +4,7 @@
 #' @param end
 #' @param trainset
 #' @param testset
-#' @param list_country_code
+#' @param country_code
 #'
 #' @return
 #' @export
@@ -13,14 +13,14 @@
 #' @examples
 #'
 #'
-simulator_variant <- function(trainset , testset,start = "2021-01",end = "2022-01",list_country_code){
+simulator_variant <- function(trainset , testset,start = "2021-01",end = "2022-01",country_code){
 
 
   testset <- testset %>% filter(year_week > start & year_week<end)
 
   # For each country
   stat_allcountry <- data.frame()
-  for (country in list_country_code) {
+  for (country in country_code) {
 
     # Data train
     train_country <- trainset %>% filter(country_code == country)

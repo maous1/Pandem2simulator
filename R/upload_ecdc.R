@@ -13,14 +13,14 @@ upload_ecdc <- function() {
 
   download.file(url = "https://opendata.ecdc.europa.eu/covid19/virusvariant/csv/data.csv",
                 destfile = "data/variants_aggregated.csv")
-  variants_aggregated <- read.csv("data/variants_aggregated.csv")
+  variants_aggregated <- tibble(read.csv("data/variants_aggregated.csv"))
   save(variants_aggregated,file = "data/variants_aggregated.RData")
   unlink("data/variants_aggregated.csv")
   ########### cases database
 
   download.file(url = "https://opendata.ecdc.europa.eu/covid19/agecasesnational/csv/data.csv",
                 destfile = "data/case_aggregated.csv")
-  case_aggregated <- read.csv("data/case_aggregated.csv")
+  case_aggregated <- tibble(read.csv("data/case_aggregated.csv"))
   save(case_aggregated,file = "data/case_aggregated.RData")
   unlink("data/case_aggregated.csv")
   }
