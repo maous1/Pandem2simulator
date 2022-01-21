@@ -2,6 +2,8 @@
 
 export(desagregation)
 export(format_case)
+export(format_daily)
+export(format_rivm)
 export(format_variant)
 export(simulator_variant)
 export(upload_ecdc)

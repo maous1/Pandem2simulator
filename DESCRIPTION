@@ -1,6 +1,6 @@
 Package: Pandem2simulator
 Title: Data simulator for Pandem2
-Version: 0.2.1
+Version: 0.3
 Authors@R: 
     c(person("Maxime", "Bonjean", , "m.bonjean@uclouvain.be", role = c("aut", "cre")),
       person("Julie", "Hurel", , "julie.hurel@uclouvain.be", role = c("aut")),

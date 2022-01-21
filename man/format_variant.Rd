@@ -4,7 +4,7 @@
 \alias{format_variant}
 \title{put the files variant in the right format}
 \usage{
-format_variant(variants)
+format_variant(variants_aggregated)
 }
 \value{
 disaggregate data in "data/alldata.csv"

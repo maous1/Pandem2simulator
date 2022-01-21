@@ -10,5 +10,5 @@ format_case <- function(case_aggregated) {
     select(country_code,year_week,age_group,new_cases)%>%
     filter(new_cases > 0)
 
-  return(case_aggregated)
+  return(case_aggregated_format)
 }
