@@ -10,17 +10,17 @@ I propose a script to test the package
 
 ```
 library(Pandem2simulator)
-#loading the data
+# Loading the data
 data("variants_aggregated")
 data("case_aggregated")
-#formated the files
+# Formated the files
 case_aggregated_format <- format_case(case_aggregated)
 variants_aggregated_format <- format_variant(variants_aggregated)
-#desaggragated the data
-case_desaggragated <- desagregation(case_aggregated_format)
-variants_desaggragated <- desagregation(variants_aggregated_format)
-#simulator test on belgium in week 31-2021
-resultat_desaggregated = simulator_variant(trainset = variants_desaggragated,testset = case_desaggragated,start = "2021-30",end = "2021-32",country_code = c("BE"))
+# Desaggragated the data
+case_desaggregated <- desagregation(case_aggregated_format)
+variants_desaggregated <- desagregation(variants_aggregated_format)
+# Simulator is applied on belgium cases data from week 2021-19 to 2021-32
+resultat_desaggregated = simulator_variant(trainset = variants_desaggregated,testset = case_desaggregated,start = "2021-19",end = "2021-32",country_code = c("BE"))
 resultat_aggregated = resultat_desaggregated %>% group_by(country_code,year_week,age_group,variant)%>% summarise(nb = n())
 
 ```
