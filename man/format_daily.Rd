@@ -4,7 +4,7 @@
 \alias{format_daily}
 \title{Title}
 \usage{
-format_daily(daily, voc)
+format_daily(daily, local_region)
 }
 \arguments{
 \item{daily}{}

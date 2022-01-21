@@ -6,11 +6,11 @@
 #' @export
 #'
 #' @examples
-format_daily <- function(daily,voc){
+format_daily <- function(daily,local_region){
 
-names(daily) = daily[1,]
-daily = daily[2:dim(daily)[1],]
-daily = daily %>%
+names(daily) <- daily[1,]
+daily <- daily[2:dim(daily)[1],]
+daily <- daily %>%
   select(-c(`N cases, WHO label`)) %>%
   rename(Date = `Date / Week`)%>%
   rename(country = `NUTS2/3/country`) %>%
@@ -19,9 +19,9 @@ daily = daily %>%
   rename(sequenced=`N cases`)
 
 
-daily$Date = as.numeric(daily$Date)
-daily$sequenced = as.numeric(daily$sequenced)
-daily$total = as.numeric(daily$total)
+daily$Date <- as.numeric(daily$Date)
+daily$sequenced <- as.numeric(daily$sequenced)
+daily$total <- as.numeric(daily$total)
 
 daily <- daily %>%
   filter(sequenced > 0 ) %>%
@@ -33,17 +33,17 @@ daily <- daily %>%
   select( year_week , Date, country , variant , total , sequenced)
 
 
-no_sequenced = daily %>% group_by(year_week,country)%>%summarise(new_cases=total-sum(sequenced))%>% distinct()%>%mutate(variant="NSQ")
-sequenced = daily %>%rename(new_cases = sequenced) %>%select(year_week,country,new_cases,variant)
+no_sequenced <- daily %>% group_by(year_week,country)%>%summarise(new_cases=total-sum(sequenced))%>% distinct()%>%mutate(variant="NSQ")
+sequenced <- daily %>%rename(new_cases = sequenced) %>%select(year_week,country,new_cases,variant)
 
 
-country = voc%>%
+country <- local_region%>%
   filter(Level == "Country") %>%
   select(Name,Code) %>%
   rename(country= Name) %>%
   rename(country_code=Code)
 
-daily_format = union_all(sequenced,no_sequenced) %>% left_join(country, "country") %>% filter(new_cases>0)
+daily_format <- union_all(sequenced,no_sequenced) %>% left_join(country, "country") %>% filter(new_cases>0)
 return(daily_format)
 
 }

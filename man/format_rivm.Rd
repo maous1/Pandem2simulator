@@ -4,7 +4,7 @@
 \alias{format_rivm}
 \title{format the RIVM files}
 \usage{
-format_rivm(case_RIVM, voc)
+format_rivm(case_RIVM, local_region)
 }
 \arguments{
 \item{voc}{}
