@@ -25,13 +25,16 @@ simulator_variant <- function(trainset, testset, start = "2021-01", end = "2022-
     # Data train
     train_country <- trainset %>% filter(country_code == pays)
     train_country$year_week_num <- as.numeric(factor(train_country$year_week))
-    train_country$year_week_jiter <- jitter(train_country$year_week_num, factor = 0.1)
+    train_country$year_week_jiter <- jitter(x = train_country$year_week_num,
+                                            factor = 0.1)
 
     # Data test
-    test_country <- testset %>% filter(country_code == pays)
-    test_country$year_week_num <- as.numeric(factor(test_country$year_week,
+    test_country <- testset %>%
+      filter(country_code == pays)
+    test_country$year_week_num <- as.numeric(factor(x = test_country$year_week,
                                                     levels = levels(factor(train_country$year_week))))
-    test_country$year_week_jiter <- jitter(test_country$year_week_num,factor = 0.1)
+    test_country$year_week_jiter <- jitter(x = test_country$year_week_num,
+                                           factor = 0.1)
 
     # Prediction with KNN model
     pr <- knn(train = train_country$year_week_jiter,

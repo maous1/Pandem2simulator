@@ -33,17 +33,26 @@ daily <- daily %>%
   select( year_week , Date, country , variant , total , sequenced)
 
 
-no_sequenced <- daily %>% group_by(year_week,country)%>%summarise(new_cases=total-sum(sequenced))%>% distinct()%>%mutate(variant="NSQ")
-sequenced <- daily %>%rename(new_cases = sequenced) %>%select(year_week,country,new_cases,variant)
+no_sequenced <- daily %>%
+  group_by(year_week,country) %>%
+  summarise(new_cases=total-sum(sequenced)) %>%
+  distinct() %>%
+  mutate(variant="NSQ")
+sequenced <- daily %>%
+  rename(new_cases = sequenced) %>%
+  select(year_week,country,new_cases,variant)
 
 
-country <- local_region%>%
+country <- local_region %>%
   filter(Level == "Country") %>%
   select(Name,Code) %>%
   rename(country= Name) %>%
   rename(country_code=Code)
 
-daily_format <- union_all(sequenced,no_sequenced) %>% left_join(country, "country") %>% filter(new_cases>0)
-return(daily_format)
+daily_format <- union_all(sequenced,no_sequenced) %>%
+  left_join(country, "country") %>%
+  filter(new_cases>0)
 
+
+return(daily_format)
 }

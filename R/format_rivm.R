@@ -13,7 +13,8 @@ format_rivm <- function(case_RIVM,local_region){
   case_RIVM <- case_RIVM[2:dim(case_RIVM)[1],]
   case_RIVM <- case_RIVM %>%
     select(Date,`NUTS2/3/country` ,`Confirmed cases`) %>%
-    rename(Code_municipality = `NUTS2/3/country`)%>%rename(new_cases = `Confirmed cases`)
+    rename(Code_municipality = `NUTS2/3/country`)%>%
+    rename(new_cases = `Confirmed cases`)
   case_RIVM$Date <- as.numeric(case_RIVM$Date)
   case_RIVM$new_cases <- as.numeric(case_RIVM$new_cases)
   case_RIVM <- case_RIVM %>%
@@ -25,9 +26,7 @@ format_rivm <- function(case_RIVM,local_region){
     mutate(year_week = paste(temp2,temp3,sep="-")) %>%
     select(Code_municipality, Date, year_week, new_cases)
 
-
-
-  country <- local_region%>%
+  country <- local_region %>%
     filter(Level == "Country") %>%
     select(Name,Code) %>%
     rename(country= Name) %>%
