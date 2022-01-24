@@ -10,7 +10,7 @@ simulator_variant(
   start = "2021-01",
   end = "2022-01",
   country_code,
-  mode = T
+  mode_realist = T
 )
 }
 \arguments{

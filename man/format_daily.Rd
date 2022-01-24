@@ -4,7 +4,7 @@
 \alias{format_daily}
 \title{Title}
 \usage{
-format_daily(daily, local_region, case_RIVM)
+format_daily(daily, local_region, case_RIVM_formated)
 }
 \arguments{
 \item{case_RIVM}{}

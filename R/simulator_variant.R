@@ -14,11 +14,12 @@
 #' @examples
 #'
 #'
-simulator_variant <- function(trainset, testset, start = "2021-01", end = "2022-01", country_code, mode = T){
-
+simulator_variant <- function(trainset, testset, start = "2021-01", end = "2022-01", country_code, mode_realist = T){
+  set.seed(1)
+  trainset <- trainset %>% filter(year_week > start & year_week < end)
   testset <- testset %>% filter(year_week > start & year_week < end)
   stat_allcountry <- data.frame()
-  if (mode == T) {
+  if (mode_realist == T) {
     # For each country
     for (pays in country_code) {
 
@@ -53,10 +54,9 @@ simulator_variant <- function(trainset, testset, start = "2021-01", end = "2022-
 
     }
   } else {
-    train <- trainset %>% filter(year_week > start & year_week < end)
     for (pays in country_code) {
       test_country <- testset %>% filter(country_code == pays)
-      train_country <- train %>% filter(country_code == pays)
+      train_country <- trainset %>% filter(country_code == pays)
       variant = unique(train_country$variant)
 
       test_country$variant <- sample(variant,dim(test_country)[1],replace = T)
