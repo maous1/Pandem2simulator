@@ -4,10 +4,10 @@
 \alias{format_daily}
 \title{Title}
 \usage{
-format_daily(daily, local_region)
+format_daily(daily, local_region, case_RIVM)
 }
 \arguments{
-\item{daily}{}
+\item{case_RIVM}{}
 }
 \value{
 

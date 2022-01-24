@@ -5,6 +5,7 @@
 #' @param trainset
 #' @param testset
 #' @param country_code
+#' @param mode
 #'
 #' @return
 #' @export
@@ -13,44 +14,56 @@
 #' @examples
 #'
 #'
-simulator_variant <- function(trainset, testset, start = "2021-01", end = "2022-01", country_code){
-
+simulator_variant <- function(trainset, testset, start = "2021-01", end = "2022-01", country_code, mode = T){
 
   testset <- testset %>% filter(year_week > start & year_week < end)
-
-  # For each country
   stat_allcountry <- data.frame()
-  for (pays in country_code) {
+  if (mode == T) {
+    # For each country
+    for (pays in country_code) {
 
-    # Data train
-    train_country <- trainset %>% filter(country_code == pays)
-    train_country$year_week_num <- as.numeric(factor(train_country$year_week))
-    train_country$year_week_jiter <- jitter(x = train_country$year_week_num,
-                                            factor = 0.1)
+      # Data train
+      train_country <- trainset %>% filter(country_code == pays)
+      train_country$year_week_num <- as.numeric(factor(train_country$year_week))
+      train_country$year_week_jiter <- jitter(x = train_country$year_week_num,
+                                              factor = 0.1)
 
-    # Data test
-    test_country <- testset %>%
-      filter(country_code == pays)
-    test_country$year_week_num <- as.numeric(factor(x = test_country$year_week,
-                                                    levels = levels(factor(train_country$year_week))))
-    test_country$year_week_jiter <- jitter(x = test_country$year_week_num,
-                                           factor = 0.1)
+      # Data test
+      test_country <- testset %>%
+        filter(country_code == pays)
+      test_country$year_week_num <- as.numeric(factor(x = test_country$year_week,
+                                                      levels = levels(factor(train_country$year_week))))
+      test_country$year_week_jiter <- jitter(x = test_country$year_week_num,
+                                             factor = 0.1)
 
-    # Prediction with KNN model
-    pr <- knn(train = train_country$year_week_jiter,
-              test = data.frame(year_week = test_country$year_week_jiter),
-              cl = train_country$variant,
-              k = 1)
+      # Prediction with KNN model
+      pr <- knn(train = train_country$year_week_jiter,
+                test = data.frame(year_week = test_country$year_week_jiter),
+                cl = train_country$variant,
+                k = 1)
 
-    # Create variant variable
-    test_country$variant <- as.character(pr)
+      # Create variant variable
+      test_country$variant <- as.character(pr)
 
-    # Concatenate prediction file for all countries
+      # Concatenate prediction file for all countries
 
-    test_country <- test_country %>%
-      select(-c(year_week_jiter, year_week_num))
-    stat_allcountry <- union_all(stat_allcountry, test_country)
+      test_country <- test_country %>%
+        select(-c(year_week_jiter, year_week_num))
+      stat_allcountry <- union_all(stat_allcountry, test_country)
+
+    }
+  } else {
+    train <- trainset %>% filter(year_week > start & year_week < end)
+    for (pays in country_code) {
+      test_country <- testset %>% filter(country_code == pays)
+      train_country <- train %>% filter(country_code == pays)
+      variant = unique(train_country$variant)
+
+      test_country$variant <- sample(variant,dim(test_country)[1],replace = T)
+      stat_allcountry <- union_all(stat_allcountry, test_country)
+    }
 
   }
   return(stat_allcountry)
+
 }
