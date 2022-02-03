@@ -27,7 +27,7 @@ distortion_enrichment <- function(data_aggregated , group , variants){
     other_category_wanted <- other_category %>% filter(variant==variants)
     other_category_unwanted <- other_category %>% filter(variant!=variants)
     partial <- rbind(targetted_category_unwanted,other_category_wanted)
-    partial <- partial %>% mutate(variant = sample(variant,n(),replace=F))
+    partial <- as.data.frame(partial) %>% mutate(variant = sample(variant,n(),replace=F))
     full_desaggregated_week  <- rbind(partial,targetted_category_wanted,other_category_unwanted)
 
     full_aggregated_week <- full_desaggregated_week %>% group_by(age_group,variant) %>% summarise(nb=n())%>% mutate(country_code = country) %>% mutate(year_week = week)
