@@ -23,8 +23,8 @@ format_rivm <- function(case_RIVM,local_region){
     mutate(temp = strptime(Date,format="%Y-%m-%d")) %>%
     mutate(temp2 = format(temp,format="%Y")) %>%
     mutate(temp3 = format(temp,format="%U")) %>%
-    mutate(year_week = paste(temp2,temp3,sep="-")) %>%
-    select(Code_municipality, Date, year_week, new_cases)
+    mutate(time = paste(temp2,temp3,sep="-")) %>%
+    select(Code_municipality, Date, time, new_cases)
 
   country <- local_region %>%
     filter(Level == "Country") %>%

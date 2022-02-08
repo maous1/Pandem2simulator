@@ -31,21 +31,21 @@ format_daily <- function(daily,local_region,case_RIVM_formated){
     mutate(temp = strptime(Date,format="%Y-%m-%d")) %>%
     mutate(temp2 = format(temp,format="%Y")) %>%
     mutate(temp3 = format(temp,format="%U")) %>%
-    mutate(year_week = paste(temp2,temp3,sep="-")) %>%
-    select( year_week , Date, country , variant , sequenced)
+    mutate(time = paste(temp2,temp3,sep="-")) %>%
+    select( time , Date, country , variant , sequenced)
 
   sequenced <- daily %>%
     rename(new_cases = sequenced) %>%
-    select(year_week,country,new_cases,variant)
+    select(time,country,new_cases,variant)
 
   total <- case_RIVM_formated %>%
-    group_by(country,year_week)%>%
+    group_by(country,time)%>%
     summarise(total = sum(new_cases))
 
 
   no_sequenced <- daily %>%
-    left_join(total,by = c("country" = "country", "year_week" = "year_week"))%>%
-    group_by(country,year_week) %>%
+    left_join(total,by = c("country" = "country", "time" = "time"))%>%
+    group_by(country,time) %>%
     summarise(new_cases=total-sum(sequenced)) %>%
     distinct() %>%
     mutate(variant="NSQ")

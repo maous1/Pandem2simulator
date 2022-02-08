@@ -16,16 +16,16 @@ format_variant <- function(variants_aggregated) {
     summarise(new_cases = new_cases-sequenced)%>%
     mutate(variant="NSQ") %>%
     select(country_code, year_week,variant,new_cases)%>%
-    filter(new_cases > 0)
+    filter(new_cases > 0) %>% rename(time = year_week)
 
   # GISAID and TESSy sources are encoded separately
   # => Merge both sources for sequenced sequence
   detected_variants <- variants_aggregated %>%
     group_by(country_code, year_week, variant) %>%
     summarise(new_cases = max(number_detections_variant)) %>%
-    filter(new_cases > 0)
+    filter(new_cases > 0)  %>% rename(time = year_week)
 
-  variants_aggregated_format <- union_all(detected_variants,no_sequenced_detected) %>% group_by(country_code, year_week, variant)
+  variants_aggregated_format <- union_all(detected_variants,no_sequenced_detected) %>% group_by(country_code, time, variant)
 
   return(variants_aggregated_format)
 }
