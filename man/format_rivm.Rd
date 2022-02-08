@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_rivm.R
 \name{format_rivm}
 \alias{format_rivm}
-\title{format the RIVM files}
+\title{Formatting the files cases from RIVM excel sheet - and only keep usefull columns}
 \usage{
 format_rivm(case_RIVM, local_region)
 }
@@ -13,5 +13,5 @@ format_rivm(case_RIVM, local_region)
 
 }
 \description{
-format the RIVM files
+Formatting the files cases from RIVM excel sheet - and only keep usefull columns
 }

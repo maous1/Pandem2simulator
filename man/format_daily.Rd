@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_daily.R
 \name{format_daily}
 \alias{format_daily}
-\title{Title}
+\title{Formatting the files daily from RIVM excel sheet - and only keep usefull columns}
 \usage{
 format_daily(daily, local_region, case_RIVM_formated)
 }
@@ -13,5 +13,5 @@ format_daily(daily, local_region, case_RIVM_formated)
 
 }
 \description{
-Title
+Formatting the files daily from RIVM excel sheet - and only keep usefull columns
 }

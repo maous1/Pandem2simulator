@@ -2,13 +2,13 @@
 % Please edit documentation in R/format_variant.R
 \name{format_variant}
 \alias{format_variant}
-\title{put the files variant in the right format}
+\title{Formatting the files from ecdc :"https://opendata.ecdc.europa.eu/covid19/virusvariant/csv/data.csv"- and only keep usefull columns}
 \usage{
 format_variant(variants_aggregated)
 }
 \value{
-disaggregate data in "data/alldata.csv"
+
 }
 \description{
-put the files variant in the right format
+Formatting the files from ecdc :"https://opendata.ecdc.europa.eu/covid19/virusvariant/csv/data.csv"- and only keep usefull columns
 }

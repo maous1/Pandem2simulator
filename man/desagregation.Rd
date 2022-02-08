@@ -2,16 +2,16 @@
 % Please edit documentation in R/desagregation.R
 \name{desagregation}
 \alias{desagregation}
-\title{desaggragated a data}
+\title{desaggragated a data with a column "new_cases". Each line for N patient to one line per patient}
 \usage{
 desagregation(aggregate)
 }
 \arguments{
-\item{aggregate}{}
+\item{aggregate}{data aggregated. The data needs to have a "new_cases" column}
 }
 \value{
 
 }
 \description{
-desaggragated a data
+desaggragated a data with a column "new_cases". Each line for N patient to one line per patient
 }

@@ -1,8 +1,7 @@
-#' put the files variant in the right format
+#' Formatting the files from ecdc :"https://opendata.ecdc.europa.eu/covid19/virusvariant/csv/data.csv"- and only keep usefull columns
 #'
-#' @return disaggregate data in "data/alldata.csv"
+#' @return
 #' @export
-#' @import tidyverse
 #' @examples
 format_variant <- function(variants_aggregated) {
 

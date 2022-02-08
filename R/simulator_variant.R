@@ -1,16 +1,14 @@
-#' Simulator: Predict the variant
+#' Simulator: Predict the variant from a training set with a column week and a column variant to a testset with a column week
 #'
-#' @param start
-#' @param end
-#' @param trainset
-#' @param testset
-#' @param country_code
+#' @param start the first week for the prediction
+#' @param end the last week for the prediction
+#' @param trainset the data with a column year_week and variant
+#' @param testset the data where the variant will be predicted. Need a year_week column
+#' @param country_code a list with the countries you want to predict. In the form of country codes. (example: Belgium = BE)
 #' @param mode
 #'
 #' @return
 #' @export
-#' @import tidyverse
-#' @import class
 #' @examples
 #'
 #'

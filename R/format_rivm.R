@@ -1,4 +1,4 @@
-#' format the RIVM files
+#' Formatting the files cases from RIVM excel sheet - and only keep usefull columns
 #'
 #' @param case_RIVM
 #' @param voc

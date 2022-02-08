@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulator_variant.R
 \name{simulator_variant}
 \alias{simulator_variant}
-\title{Simulator: Predict the variant}
+\title{Simulator: Predict the variant from a training set with a column week and a column variant to a testset with a column week}
 \usage{
 simulator_variant(
   trainset,
@@ -14,13 +14,23 @@ simulator_variant(
 )
 }
 \arguments{
+\item{trainset}{the data with a column year_week and variant}
+
+\item{testset}{the data where the variant will be predicted. Need a year_week column}
+
+\item{start}{the first week for the prediction}
+
+\item{end}{the last week for the prediction}
+
+\item{country_code}{a list with the countries you want to predict. In the form of country codes. (example: Belgium = BE)}
+
 \item{mode}{}
 }
 \value{
 
 }
 \description{
-Simulator: Predict the variant
+Simulator: Predict the variant from a training set with a column week and a column variant to a testset with a column week
 }
 \examples{
 

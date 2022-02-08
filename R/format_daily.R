@@ -1,4 +1,4 @@
-#' Title
+#' Formatting the files daily from RIVM excel sheet - and only keep usefull columns
 #'
 #' @param daily
 #' @param local_region

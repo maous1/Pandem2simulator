@@ -2,13 +2,13 @@
 % Please edit documentation in R/format_case.R
 \name{format_case}
 \alias{format_case}
-\title{put the files case in the right format}
+\title{Formatting the files from ecdc :"https://opendata.ecdc.europa.eu/covid19/agecasesnational/csv/data.csv"- and only keep usefull columns}
 \usage{
 format_case(case_aggregated)
 }
 \value{
-disaggregate data in "data/ecdc/age_cases.csv"
+
 }
 \description{
-put the files case in the right format
+Formatting the files from ecdc :"https://opendata.ecdc.europa.eu/covid19/agecasesnational/csv/data.csv"- and only keep usefull columns
 }

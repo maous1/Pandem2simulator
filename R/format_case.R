@@ -1,8 +1,7 @@
-#' put the files case in the right format
+#' Formatting the files from ecdc :"https://opendata.ecdc.europa.eu/covid19/agecasesnational/csv/data.csv"- and only keep usefull columns
 #'
-#' @return disaggregate data in "data/ecdc/age_cases.csv"
+#' @return
 #' @export
-#' @import tidyverse
 #' @examples
 format_case <- function(case_aggregated) {
 
