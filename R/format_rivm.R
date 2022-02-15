@@ -19,12 +19,9 @@ format_rivm <- function(case_RIVM,local_region){
   case_RIVM$new_cases <- as.numeric(case_RIVM$new_cases)
   case_RIVM <- case_RIVM %>%
     filter(new_cases>0) %>%
-    mutate(Date = as.Date(Date, origin = "1899-12-30")) %>%
-    mutate(temp = strptime(Date,format="%Y-%m-%d")) %>%
-    mutate(temp2 = format(temp,format="%Y")) %>%
-    mutate(temp3 = format(temp,format="%U")) %>%
-    mutate(time = paste(temp2,temp3,sep="-")) %>%
-    select(Code_municipality, Date, time, new_cases)
+    mutate(time = as.Date(as.numeric(Date), origin = "1899-12-30"))%>%
+    mutate(week = cut(as.Date(time), "week"))%>%
+    select(Code_municipality, time,week ,new_cases)
 
   country <- local_region %>%
     filter(Level == "Country") %>%

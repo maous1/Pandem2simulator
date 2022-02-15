@@ -27,24 +27,20 @@ format_daily <- function(daily,local_region,case_RIVM_formated){
 
   daily <- daily %>%
     filter(sequenced > 0 ) %>%
-    mutate(Date = as.Date(Date, origin = "1899-12-30")) %>%
-    mutate(temp = strptime(Date,format="%Y-%m-%d")) %>%
-    mutate(temp2 = format(temp,format="%Y")) %>%
-    mutate(temp3 = format(temp,format="%U")) %>%
-    mutate(time = paste(temp2,temp3,sep="-")) %>%
-    select( time , Date, country , variant , sequenced)
+    mutate(time = as.Date(as.numeric(Date), origin = "1899-12-30")) %>%
+    select( time, country , variant , sequenced)
 
   sequenced <- daily %>%
     rename(new_cases = sequenced) %>%
     select(time,country,new_cases,variant)
 
   total <- case_RIVM_formated %>%
-    group_by(country,time)%>%
+    group_by(country,week)%>%
     summarise(total = sum(new_cases))
 
 
   no_sequenced <- daily %>%
-    left_join(total,by = c("country" = "country", "time" = "time"))%>%
+    left_join(total,by = c("country" = "country", "time" = "week"))%>%
     group_by(country,time) %>%
     summarise(new_cases=total-sum(sequenced)) %>%
     distinct() %>%

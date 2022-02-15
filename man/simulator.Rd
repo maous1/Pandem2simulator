@@ -2,16 +2,16 @@
 % Please edit documentation in R/simulator.R
 \name{simulator}
 \alias{simulator}
-\title{Simulator: Predict the variant from a training set with a column week and a column variant to a testset with a column week}
+\title{Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time}
 \usage{
 simulator(
   trainset,
   testset,
-  start = "2021-01",
-  end = "2022-01",
+  start = "2021-01-01",
+  end = "2022-01-01",
   country_code,
-  V1 = c(),
-  outcome = c("variant")
+  outcome = "variant",
+  desagregation = NULL
 )
 }
 \arguments{
@@ -25,13 +25,13 @@ simulator(
 
 \item{country_code}{a list with the countries you want to predict. In the form of country codes. (example: Belgium = BE)}
 
-\item{outcome}{}
+\item{desagregation}{}
 }
 \value{
 
 }
 \description{
-Simulator: Predict the variant from a training set with a column week and a column variant to a testset with a column week
+Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time
 }
 \examples{
 

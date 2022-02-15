@@ -1,10 +1,10 @@
 #' Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time
 #'
-#' @param start the first week for the prediction
-#' @param end the last week for the prediction
 #' @param trainset the data with a column year_week and variant
 #' @param testset the data where the variant will be predicted. Need a year_week column
-#' @param country_code a list with the countries you want to predict. In the form of country codes. (example: Belgium = BE)
+#' @param time
+#' @param geolocalisation
+#' @param count
 #' @param outcome
 #'
 #' @return
@@ -12,48 +12,62 @@
 #' @examples
 #'
 #'
-simulator <- function(trainset, testset, start = "2021-01", end = "2022-01", country_code, outcome= "variant"){
-  set.seed(1)
-  trainset <- trainset %>% filter(time >= start & time <= end)
-  testset <- testset %>% filter(time >= start & time <= end)
-  stat_allcountry <- data.frame()
-  # For each country
-  for (pays in country_code) {
+simulator <- function(trainset, testset,time ,geolocalisation, outcome, count= NULL){
+  set.seed(2)
+
+  names(trainset)[names(trainset) %in% geolocalisation]<-"geolocalisation"
+  names(trainset)[names(trainset) %in% time]<-"time"
+  names(testset)[names(testset) %in% geolocalisation]<-"geolocalisation"
+  names(testset)[names(testset) %in% time]<-"time"
+
+  unique_geo <- unique(trainset$geolocalisation)
+
+  if(length(count)>0){
+    trainset <- expandRows(trainset,count=count,drop=T)
+    testset <- expandRows(testset,count=count,drop=T)
+  }
+
+
+  stat_allgeolocalisation <- data.frame()
+  # For each geolocalisation
+  for (location in unique_geo) {
 
     # Data train
-    train_country <- trainset %>% filter(country_code == pays)
-    train_country$time_num <- as.numeric(factor(train_country$time))
-    train_country$time_jiter <- jitter(x = train_country$time_num,
-                                       factor = 0.1)
-    V1 <- c("time_jiter")
-    train_country_V1<- train_country[V1]
+    train_geolocalisation <- trainset %>% filter(geolocalisation == location)
+    train_geolocalisation <- train_geolocalisation %>%
+      mutate(time_num = as.numeric(as.Date(time))) %>%
+      mutate(time_jiter =jitter(x = time_num,factor = 0.1) )
 
-    classificateur = train_country[outcome]
+    V1 <- c("time_jiter")
+    train_geolocalisation_V1<- train_geolocalisation[V1]
+
+    classificateur = train_geolocalisation[outcome]
 
 
     # Data test
-    test_country <- testset %>%
-      filter(country_code == pays)
-    test_country$time_num <- as.numeric(factor(x = test_country$time,
-                                               levels = levels(factor(train_country$time))))
-    test_country$time_jiter <- jitter(x = test_country$time_num,
-                                      factor = 0.1)
-    test_country_V1 <- test_country[V1]
+    test_geolocalisation <- testset %>% filter(geolocalisation == location)
+    test_geolocalisation <- test_geolocalisation %>%
+      mutate(time_num = as.numeric(as.Date(time))) %>%
+      mutate(time_jiter =jitter(x = time_num,factor = 0.1) )
+    test_geolocalisation_V1 <- test_geolocalisation[V1]
     # Prediction with KNN model
-    pr <- knn(train = data.frame(train_country_V1),
-              test = data.frame(test_country_V1),
+    pr <- knn(train = data.frame(train_geolocalisation_V1),
+              test = data.frame(test_geolocalisation_V1),
               cl = classificateur[[1]],
               k = 1)
 
     # Create variant variable
-    test_country[outcome] <- as.character(pr)
+    test_geolocalisation[outcome] <- as.character(pr)
 
     # Concatenate prediction file for all countries
 
-    test_country <- test_country %>%
+    test_geolocalisation <- test_geolocalisation %>%
       select(-c(time_jiter, time_num))
-    stat_allcountry <- union_all(stat_allcountry, test_country)
+    stat_allgeolocalisation <- union_all(stat_allgeolocalisation, test_geolocalisation)
 
   }
-  return(stat_allcountry)
+  names(stat_allgeolocalisation)[names(stat_allgeolocalisation) %in% "geolocalisation"]<-geolocalisation
+  names(stat_allgeolocalisation)[names(stat_allgeolocalisation) %in% "time"]<-time
+  return(stat_allgeolocalisation)
 }
+
