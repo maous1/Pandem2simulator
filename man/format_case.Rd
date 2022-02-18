@@ -4,7 +4,7 @@
 \alias{format_case}
 \title{Formatting the files from ecdc :"https://opendata.ecdc.europa.eu/covid19/agecasesnational/csv/data.csv"- and only keep usefull columns}
 \usage{
-format_case(case_aggregated)
+format_case(case_aggregated, datedepart, datefin)
 }
 \value{
 

@@ -4,7 +4,7 @@
 \alias{format_variant}
 \title{Formatting the files from ecdc :"https://opendata.ecdc.europa.eu/covid19/virusvariant/csv/data.csv"- and only keep usefull columns}
 \usage{
-format_variant(variants_aggregated)
+format_variant(variants_aggregated, datedepart, datefin)
 }
 \value{
 
