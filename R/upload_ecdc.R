@@ -23,4 +23,6 @@ upload_ecdc <- function() {
   case_aggregated <- tibble(read.csv("data/case_aggregated.csv"))
   save(case_aggregated,file = "data/case_aggregated.RData")
   unlink("data/case_aggregated.csv")
+
+
   }
