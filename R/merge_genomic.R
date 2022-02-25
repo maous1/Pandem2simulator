@@ -8,10 +8,14 @@
 #' @export
 #'
 #' @examples
-merge_genomic <- function(metadata,genomic_data,col_merge){
+merge_genomic <- function(metadata,genomic_data,col_merge,count){
 
   names(metadata)[names(metadata) %in% col_merge]<-"variant_metadata"
   names(genomic_data)[names(genomic_data) %in% col_merge]<-"variant"
+
+  if(length(count)>0){
+    metadata <- expandRows(metadata,count=count,drop=T)
+  }
 
   # Create table with genomic data associated to sample metadata
   genomic_data_with_metadata <- tibble()
@@ -34,7 +38,7 @@ merge_genomic <- function(metadata,genomic_data,col_merge){
   genomic_data_with_metadata = union_all(genomic_data_with_metadata, metadata)
   # Remove original country column, collection date and ecdc variant (redundant)
   genomic_data_with_metadata <- genomic_data_with_metadata %>%
-    select(-country, - variant_ecdc, -collection_date)
+    select(-country, - variant, -collection_date)
 
 
   names(metadata)[names(metadata) %in% "variant_metadata"]<-paste0(col_merge,"_metadata")
