@@ -48,9 +48,9 @@ simulator_running <- function(trainset, testset,time ,geolocalisation, outcome, 
     train_geolocalisation <- trainset %>% filter(geolocalisation == location)
     train_geolocalisation <- train_geolocalisation %>%
       mutate(time_num = as.numeric(as.Date(time))) %>%
-      mutate(time_jiter =jitter(x = time_num,factor = 0.1) )
+      mutate(time_unif =time_num + runif(1,-5,5))
 
-    V1 <- c("time_jiter")
+    V1 <- c("time_unif")
     train_geolocalisation_V1<- train_geolocalisation[V1]
 
     classificateur = train_geolocalisation[outcome]
@@ -60,7 +60,7 @@ simulator_running <- function(trainset, testset,time ,geolocalisation, outcome, 
     test_geolocalisation <- testset %>% filter(geolocalisation == location)
     test_geolocalisation <- test_geolocalisation %>%
       mutate(time_num = as.numeric(as.Date(time))) %>%
-      mutate(time_jiter =jitter(x = time_num,factor = 0.1) )
+      mutate(time_unif =time_num + runif(1,-5,5))
     test_geolocalisation_V1 <- test_geolocalisation[V1]
     # Prediction with KNN model
     pr <- knn(train = data.frame(train_geolocalisation_V1),
@@ -74,7 +74,7 @@ simulator_running <- function(trainset, testset,time ,geolocalisation, outcome, 
     # Concatenate prediction file for all countries
 
     test_geolocalisation <- test_geolocalisation %>%
-      select(-c(time_jiter, time_num))%>% group_by_all()%>% summarise(nb=n())
+      select(-c(time_unif, time_num))%>% group_by_all()%>% summarise(nb=n())
     stat_allgeolocalisation <- union_all(stat_allgeolocalisation, test_geolocalisation)
 
   }
