@@ -4,7 +4,7 @@
 \alias{merge_genomic}
 \title{Title}
 \usage{
-merge_genomic(metadata, genomic_data, col_merge)
+merge_genomic(metadata, genomic_data, col_merge, count)
 }
 \arguments{
 \item{col_merge}{}
