@@ -36,7 +36,7 @@ simulator <- function(trainset, testset,time ,geolocalisation, outcome, count= N
     train_geolocalisation <- trainset %>% filter(geolocalisation == location)
     train_geolocalisation <- train_geolocalisation %>%
       mutate(time_num = as.numeric(as.Date(time))) %>%
-      mutate(time_unif =round(time_num + runif(1,-5,5),digits = 4))
+      mutate(time_unif =time_num + runif(1,-5,5))
 
     V1 <- c("time_unif")
     train_geolocalisation_V1<- train_geolocalisation[V1]
@@ -48,7 +48,7 @@ simulator <- function(trainset, testset,time ,geolocalisation, outcome, count= N
     test_geolocalisation <- testset %>% filter(geolocalisation == location)
     test_geolocalisation <- test_geolocalisation %>%
       mutate(time_num = as.numeric(as.Date(time))) %>%
-      mutate(time_unif =round(time_num + runif(1,-5,5),digits = 4))
+      mutate(time_unif =time_num + runif(1,-5,5))
     test_geolocalisation_V1 <- test_geolocalisation[V1]
     # Prediction with KNN model
     pr <- knn(train = data.frame(train_geolocalisation_V1),
