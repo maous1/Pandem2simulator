@@ -13,13 +13,16 @@
 #' @examples
 #'
 #'
-simulator_fragmentation <- function(trainset, testset,time ,geolocalisation, outcome, count= NULL,factor){
+simulator_combine <- function(trainset, testset,time ,geolocalisation, outcome, count= NULL,factor){
   set.seed(2)
 
   names(trainset)[names(trainset) %in% geolocalisation]<-"geolocalisation"
   names(trainset)[names(trainset) %in% time]<-"time"
   names(testset)[names(testset) %in% geolocalisation]<-"geolocalisation"
   names(testset)[names(testset) %in% time]<-"time"
+
+
+
 
   unique_geo <- unique(trainset$geolocalisation)
   date = (trainset %>% group_by(time)%>%
