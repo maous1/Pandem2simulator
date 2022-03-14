@@ -47,9 +47,9 @@ simulator_fragmentation <- function(trainset, testset,time ,geolocalisation, out
       train_geolocalisation <- trainset_frag %>% filter(geolocalisation == location)
       train_geolocalisation <- train_geolocalisation %>%
         mutate(time_num = as.numeric(as.Date(time))) %>%
-        mutate(time_unif =round(time_num + runif(1,-5,5),digits = 4))
+        mutate(time_itter = time_num + rnorm(length(time_num),0,3))
 
-      V1 <- c("time_unif")
+      V1 <- c("time_itter")
       train_geolocalisation_V1<- train_geolocalisation[V1]
 
       class = train_geolocalisation[outcome]
@@ -59,7 +59,7 @@ simulator_fragmentation <- function(trainset, testset,time ,geolocalisation, out
       test_geolocalisation <- testset_frag %>% filter(geolocalisation == location)
       test_geolocalisation <- test_geolocalisation %>%
         mutate(time_num = as.numeric(as.Date(time))) %>%
-        mutate(time_unif =round(time_num + runif(1,-5,5),digits = 4))
+        mutate(time_itter = time_num + rnorm(length(time_num),0,3))
       test_geolocalisation_V1 <- test_geolocalisation[V1]
       # Prediction with KNN model
       pr <- knn(train = data.frame(train_geolocalisation_V1),
@@ -73,7 +73,7 @@ simulator_fragmentation <- function(trainset, testset,time ,geolocalisation, out
       # Concatenate prediction file for all countries
 
       test_geolocalisation <- test_geolocalisation %>%
-        select(-c(time_unif, time_num)) %>% group_by_all()%>% summarise(nb=n())
+        select(-c(time_itter, time_num)) %>% group_by_all()%>% summarise(nb=n())
       stat_allgeolocalisation <- union_all(stat_allgeolocalisation, test_geolocalisation)
 
     }

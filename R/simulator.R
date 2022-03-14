@@ -62,7 +62,7 @@ simulator <- function(trainset, testset,time ,geolocalisation, outcome, count= N
     # Concatenate prediction file for all countries
 
     test_geolocalisation <- test_geolocalisation %>%
-      select(-c(time_unif, time_num)) %>% group_by_all()%>% summarise(nb=n())
+      select(-c(time_itter, time_num)) %>% group_by_all()%>% summarise(nb=n())
     stat_allgeolocalisation <- union_all(stat_allgeolocalisation, test_geolocalisation)
 
   }
