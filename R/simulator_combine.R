@@ -15,11 +15,16 @@
 #'
 simulator_combine <- function(trainset, testset,time ,geolocalisation, outcome, count= NULL,factor){
   set.seed(2)
-
   names(trainset)[names(trainset) %in% geolocalisation]<-"geolocalisation"
   names(trainset)[names(trainset) %in% time]<-"time"
   names(testset)[names(testset) %in% geolocalisation]<-"geolocalisation"
   names(testset)[names(testset) %in% time]<-"time"
+
+  #trainset <- trainset %>% mutate(new_cases = as.integer(round(new_cases/factor))) %>% filter(new_cases >0)
+  trainset <- trainset%>%group_by(geolocalisation,time)%>%
+    mutate(somme = sum(new_cases)) %>%
+    mutate(new_cases = as.integer(round(new_cases/somme*factor)))%>%
+    filter(new_cases >0)
 
 
 
