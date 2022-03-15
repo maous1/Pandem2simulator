@@ -20,13 +20,20 @@ simulator_combine <- function(trainset, testset,time ,geolocalisation, outcome, 
   names(testset)[names(testset) %in% geolocalisation]<-"geolocalisation"
   names(testset)[names(testset) %in% time]<-"time"
 
+  geo <- unique(trainset$geolocalisation)
+
+  geotrain <- map(.x=geo,.f = function(.x) trainset%>%filter(geolocalisation == .x)%>%group_by(time)%>%
+                    mutate(somme = sum(new_cases)) %>%
+                    mutate(new_cases = as.integer(round(new_cases/somme*factor)))%>%
+                    filter(new_cases >0))
+  geotest <- map(.x=geo,.f = function(.x) testset%>%filter(geolocalisation == .x))
   #trainset <- trainset %>% mutate(new_cases = as.integer(round(new_cases/factor))) %>% filter(new_cases >0)
   trainset <- trainset%>%group_by(geolocalisation,time)%>%
     mutate(somme = sum(new_cases)) %>%
     mutate(new_cases = as.integer(round(new_cases/somme*factor)))%>%
     filter(new_cases >0)
 
-alldata <- simulator_fragmentation(trainset=trainset,testset=testset,time=time,geolocalisation=geolocalisation,outcome=outcome,count=count,factor="month")
-return(alldata)
+  alldata <- map2_df(.x=geotrain,.y=geotest,.f = function(.x,.y) simulator_fragmentation(trainset=.x,testset=.y,time=time,geolocalisation=geolocalisation,outcome=outcome,count=count,factor="month"))
+  return(alldata)
 }
 
