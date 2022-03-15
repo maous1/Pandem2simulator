@@ -19,11 +19,13 @@ simulator_fragmentation <- function(trainset, testset,time ,geolocalisation, out
   names(trainset)[names(trainset) %in% time]<-"time"
   names(testset)[names(testset) %in% time]<-"time"
   if(is.numeric(factor)){
-    date <- (trainset %>% group_by(time)%>%
-              summarise(case_week= sum(new_cases))%>%
-              mutate(cum= cumsum(case_week))%>%mutate(index = floor(cum/factor))%>%group_by(index)%>%slice(1))$time
+    date <- as.character((trainset %>% group_by(time)%>%
+                            summarise(case_week= sum(new_cases))%>%
+                            mutate(cum= cumsum(case_week))%>%mutate(index = floor(cum/factor))%>%group_by(index)%>%slice(1))$time)
+    date[length(date)+1] <- as.character(as.Date(as.numeric(as.Date(trainset$time[length(trainset$time)]))+1,origin = '1970-01-01'))
   }else{
     date <- unique((trainset%>%mutate(time = format(as.Date(time),"%Y-%m-01")))$time)
+    date[length(date)+1] <- as.character(as.Date(as.numeric(as.Date(trainset$time[length(trainset$time)]))+1,origin = '1970-01-01'))
   }
 
   datedepart <- date[-length(date)]
