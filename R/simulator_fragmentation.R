@@ -22,8 +22,7 @@ simulator_fragmentation <- function(trainset, testset,time ,geolocalisation, out
     date <- (trainset %>% group_by(time)%>%
               summarise(case_week= sum(new_cases))%>%
               mutate(cum= cumsum(case_week))%>%mutate(index = floor(cum/factor))%>%group_by(index)%>%slice(1))$time
-  }
-  else{
+  }else{
     date <- unique((trainset%>%mutate(time = format(as.Date(time),"%Y-%m-01")))$time)
   }
 
