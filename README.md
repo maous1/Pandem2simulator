@@ -24,7 +24,7 @@ variants_aggregated_formatted_BE <-   variants_aggregated_formatted %>%
   filter(country_code == "BE")
 case_aggregated_BE <-   case_aggregated %>% 
   filter(country_code == "BE")
-resultat_desaggregated = simulator_variant(trainset = variants_aggregated_formatted_BE,
+resultat_desaggregated = simulator(trainset = variants_aggregated_formatted_BE,
   testset = case_aggregated_BE,
   geolocalisation = "country_code",
   outcome = "variant",
