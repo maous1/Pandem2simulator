@@ -25,4 +25,13 @@ upload_ecdc <- function() {
   unlink("data/case_aggregated.csv")
 
 
+
+  download.file(url = "https://opendata.ecdc.europa.eu/covid19/hospitalicuadmissionrates/csv/data.csv",
+                destfile = "data/hospitalisation.csv")
+  hospitalisation <- tibble(read.csv("data/hospitalisation.csv"))
+  save(hospitalisation,file = "data/hospitalisation.RData")
+  unlink("data/hospitalisation.csv")
+
+
+
   }
