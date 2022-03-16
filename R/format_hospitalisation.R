@@ -1,11 +1,11 @@
--#' disaggregate hospitalisation files
+#' disaggregate hospitalisation files
   #'
   #' @param hospitalisation
   #'
   #' @param vaccination
   #' @param case_aggregated
   #'
-  #' @return disaggregate data in "data/ecdc/hospitalisation.csv"
+  #' @return
   #' @export
   #' @examples
   format_hospitalisation <- function(hospitalisation,vaccination,case_aggregated) {
@@ -16,9 +16,7 @@
       distinct()%>%
       rename(country_code = ReportingCountry)
 
-    hospitalisation <- read_csv("data/ecdc/hospitalisation.csv")
-    data = read_csv("data/ecdc/age_cases.csv")
-    list_country_code <- data %>% select(country, country_code) %>% distinct %>% filter(country_code != "BG")
+    #list_country_code <- data %>% select(country, country_code) %>% distinct %>% filter(country_code != "BG")
 
     hospitalisation_detected = hospitalisation %>%
       left_join(list_country_code ,by = "country")%>%
