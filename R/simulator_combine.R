@@ -27,7 +27,8 @@ simulator_combine <- function(trainset, testset,time ,geolocalisation, outcome, 
                     mutate(new_cases = as.integer(round(new_cases/somme*factor)))%>%
                     filter(new_cases >0))
   geotest <- map(.x=geo,.f = function(.x) testset%>%filter(geolocalisation == .x))
-  #trainset <- trainset %>% mutate(new_cases = as.integer(round(new_cases/factor))) %>% filter(new_cases >0)
+
+
   trainset <- trainset%>%group_by(geolocalisation,time)%>%
     mutate(somme = sum(new_cases)) %>%
     mutate(new_cases = as.integer(round(new_cases/somme*factor)))%>%

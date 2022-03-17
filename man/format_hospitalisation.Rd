@@ -4,7 +4,13 @@
 \alias{format_hospitalisation}
 \title{disaggregate hospitalisation files}
 \usage{
-format_hospitalisation(hospitalisation, vaccination, case_aggregated)
+format_hospitalisation(
+  hospitalisation,
+  vaccination,
+  case_aggregated,
+  datedepart,
+  datefin
+)
 }
 \arguments{
 \item{hospitalisation}{}
