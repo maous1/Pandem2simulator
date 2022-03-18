@@ -15,6 +15,40 @@
 #'
 simulator_combine <- function(trainset, testset,time ,geolocalisation, outcome, count= NULL,factor){
 
+  if (!any(names(trainset) %in% geolocalisation)) {
+    if (!any(names(testset) %in% geolocalisation)) {
+      stop("wrong geolocalisation in testset and trainset")
+    }
+    stop("wrong geolocalisation in  trainset")
+  }if (!any(names(testset) %in% geolocalisation)) {
+    stop("wrong geolocalisation in testset")
+  }
+
+  if (!any(names(trainset) %in% time)) {
+    if (!any(names(testset) %in% time)) {
+      stop("wrong time in testset and trainset")
+    }
+    stop("wrong time in  trainset")
+  }if (!any(names(testset) %in% time)) {
+    stop("wrong time in testset")
+  }
+
+  if (!any(names(trainset) %in% outcome)) {
+    stop("wrong outcome in trainset")
+  }
+
+  if (!any(names(trainset) %in% count)) {
+    if (!any(names(testset) %in% count)) {
+      stop("wrong count in testset and trainset")
+    }
+    stop("wrong count in  trainset")
+  }if (!any(names(testset) %in% count)) {
+    stop("wrong count in testset")
+  }
+
+
+
+
   names(trainset)[names(trainset) %in% geolocalisation]<-"geolocalisation"
   names(trainset)[names(trainset) %in% time]<-"time"
   names(testset)[names(testset) %in% geolocalisation]<-"geolocalisation"
@@ -26,6 +60,7 @@ simulator_combine <- function(trainset, testset,time ,geolocalisation, outcome, 
   testset_list <- testset %>% split(.$geolocalisation)
 
   common_geo <- intersect(names(trainset_list),names(testset_list))
+  if(is_empty(common_geo)){stop("not the same country")}
   trainset_list <- trainset_list[is.element(names(trainset_list),common_geo)]
   testset_list <- testset_list[is.element(names(testset_list),common_geo)]
 
