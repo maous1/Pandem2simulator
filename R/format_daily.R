@@ -8,17 +8,16 @@
 #' @export
 #'
 #' @examples
-format_daily <- function(daily,local_region,case_RIVM_formated){
-
-  names(daily) <- daily[1,]
-  daily <- daily[2:dim(daily)[1],]
+format_daily <- function(daily, local_region, case_RIVM_formated) {
+  names(daily) <- daily[1, ]
+  daily <- daily[2:dim(daily)[1], ]
   daily <- daily %>%
     select(-c(`N cases, WHO label`)) %>%
-    rename(Date = `Date / Week`)%>%
+    rename(Date = `Date / Week`) %>%
     rename(country = `NUTS2/3/country`) %>%
-    rename(variant=`N cases, Pango linage`) %>%
-    rename(total=`Sample size`)%>%
-    rename(sequenced=`N cases`)
+    rename(variant = `N cases, Pango linage`) %>%
+    rename(total = `Sample size`) %>%
+    rename(sequenced = `N cases`)
 
 
   daily$Date <- as.numeric(daily$Date)
@@ -26,36 +25,36 @@ format_daily <- function(daily,local_region,case_RIVM_formated){
   daily$total <- as.numeric(daily$total)
 
   daily <- daily %>%
-    filter(sequenced > 0 ) %>%
+    filter(sequenced > 0) %>%
     mutate(time = as.Date(as.numeric(Date), origin = "1899-12-30")) %>%
-    select( time, country , variant , sequenced)
+    select(time, country, variant, sequenced)
 
   sequenced <- daily %>%
     rename(new_cases = sequenced) %>%
-    select(time,country,new_cases,variant)
+    select(time, country, new_cases, variant)
 
   total <- case_RIVM_formated %>%
-    group_by(country,week)%>%
+    group_by(country, week) %>%
     summarise(total = sum(new_cases))
 
 
   no_sequenced <- daily %>%
-    left_join(total,by = c("country" = "country", "time" = "week"))%>%
-    group_by(country,time) %>%
-    summarise(new_cases=total-sum(sequenced)) %>%
+    left_join(total, by = c("country" = "country", "time" = "week")) %>%
+    group_by(country, time) %>%
+    summarise(new_cases = total - sum(sequenced)) %>%
     distinct() %>%
-    mutate(variant="NSQ")
+    mutate(variant = "NSQ")
 
 
   country <- local_region %>%
     filter(Level == "Country") %>%
-    select(Name,Code) %>%
-    rename(country= Name) %>%
-    rename(country_code=Code)
+    select(Name, Code) %>%
+    rename(country = Name) %>%
+    rename(country_code = Code)
 
-  daily_format <- union_all(sequenced,no_sequenced) %>%
+  daily_format <- union_all(sequenced, no_sequenced) %>%
     left_join(country, "country") %>%
-    filter(new_cases>0)
+    filter(new_cases > 0)
 
 
   return(daily_format)
