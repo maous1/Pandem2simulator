@@ -1,49 +1,52 @@
 #' Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time
+#' The trainset and the testset must have the columns geolocation, time, count. You define the name of these columns in input and the columns must have the same name in the 2 data sets.
+#' The trainset must have in addition an outcome column that you also define in input.
 #'
-#' @param trainset the data with a column year_week and variant
-#' @param testset the data where the variant will be predicted. Need a year_week column
-#' @param time
-#' @param geolocalisation
-#' @param count
-#' @param outcome
+#' @param trainset the dataset used to train the classifier
+#' @param testset the dataset to which we will add a metadata
+#' @param time the name of the column where the dates are found format = "%Y-%m-%d"
+#' @param geolocalisation the name of the column where the different regions are located
+#' @param count the name of the column used to desaggregate the data
+#' @param outcome the name of the trainset column where the metadata to be added to the testset is located
 #' @param factor
 #'
-#' @return
+#'
+#' @return The function returns the testset dataset with an outcome column based on the trainset. The output dataset is well aggregated.
 #' @export
 #' @examples
 simulator <- function(trainset, testset, time, geolocalisation, outcome, count, factor) {
   if (!any(names(trainset) %in% geolocalisation)) {
     if (!any(names(testset) %in% geolocalisation)) {
-      stop("wrong geolocalisation in testset and trainset")
+      stop("error : wrong geolocalisation in testset and trainset")
     }
-    stop("wrong geolocalisation in  trainset")
+    stop("error : wrong geolocalisation in  trainset")
   }
   if (!any(names(testset) %in% geolocalisation)) {
-    stop("wrong geolocalisation in testset")
+    stop("error : wrong geolocalisation in testset")
   }
 
   if (!any(names(trainset) %in% time)) {
     if (!any(names(testset) %in% time)) {
-      stop("wrong time in testset and trainset")
+      stop("error : wrong time in testset and trainset")
     }
-    stop("wrong time in  trainset")
+    stop("error : wrong time in  trainset")
   }
   if (!any(names(testset) %in% time)) {
-    stop("wrong time in testset")
+    stop("error : wrong time in testset")
   }
 
   if (!any(names(trainset) %in% outcome)) {
-    stop("wrong outcome in trainset")
+    stop("error : wrong outcome in trainset")
   }
 
   if (!any(names(trainset) %in% count)) {
     if (!any(names(testset) %in% count)) {
-      stop("wrong count in testset and trainset")
+      stop("error : wrong count in testset and trainset")
     }
-    stop("wrong count in  trainset")
+    stop("error : wrong count in  trainset")
   }
   if (!any(names(testset) %in% count)) {
-    stop("wrong count in testset")
+    stop("error : wrong count in testset")
   }
 
   names(trainset)[names(trainset) %in% geolocalisation] <- "geolocalisation"
