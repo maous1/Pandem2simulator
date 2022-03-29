@@ -29,6 +29,7 @@ resultat_desaggregated = simulator(trainset = variants_aggregated_formatted_BE,
   geolocalisation = "country_code",
   outcome = "variant",
   count = 'new_cases', 
-  time= "time")
+  time= "time",
+  factor = 500)
 
 ```
