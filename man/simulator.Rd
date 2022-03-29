@@ -4,14 +4,14 @@
 \alias{simulator}
 \title{Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time}
 \usage{
-simulator(trainset, testset, time, geolocalisation, outcome, count = NULL)
+simulator(trainset, testset, time, geolocalisation, outcome, count, factor)
 }
 \arguments{
 \item{trainset}{the data with a column year_week and variant}
 
 \item{testset}{the data where the variant will be predicted. Need a year_week column}
 
-\item{outcome}{}
+\item{factor}{}
 }
 \value{
 
