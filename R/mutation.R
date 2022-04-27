@@ -9,13 +9,13 @@
 mutation <- function(case_variants_genomic,numero) {
   delmissub<- function(numero,substitutions,missing,deletion)
   {
-    startspike = 21562+numero
+    startspike = numero
     frame1 <- data.frame(substitutions = unlist(strsplit(substitutions,','))) %>%
       mutate(place = gsub("[^0-9]", "", substitutions))%>%
       filter(place == (startspike))%>%
       mutate(letter = gsub("[0-9]", "", substitutions) )
     if (!is_empty(frame1$substitutions)) {
-      return(frame$letter)
+      return(frame1$letter)
     }
 
     if (!is.na(deletion)) {

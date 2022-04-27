@@ -2,24 +2,32 @@
 % Please edit documentation in R/simulator.R
 \name{simulator}
 \alias{simulator}
-\title{Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time}
+\title{Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time
+The trainset and the testset must have the columns geolocation, time, count. You define the name of these columns in input and the columns must have the same name in the 2 data sets.
+The trainset must have in addition an outcome column that you also define in input.}
 \usage{
 simulator(trainset, testset, time, geolocalisation, outcome, count, factor)
 }
 \arguments{
-\item{trainset}{the data with a column year_week and variant}
+\item{trainset}{the dataset used to train the classifier}
 
-\item{testset}{the data where the variant will be predicted. Need a year_week column}
+\item{testset}{the dataset to which we will add a metadata}
+
+\item{time}{the name of the column where the dates are found format = "\%Y-\%m-\%d"}
+
+\item{geolocalisation}{the name of the column where the different regions are located}
+
+\item{outcome}{the name of the trainset column where the metadata to be added to the testset is located}
+
+\item{count}{the name of the column used to desaggregate the data}
 
 \item{factor}{}
 }
 \value{
-
+The function returns the testset dataset with an outcome column based on the trainset. The output dataset is well aggregated.
 }
 \description{
 Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time
-}
-\examples{
-
-
+The trainset and the testset must have the columns geolocation, time, count. You define the name of these columns in input and the columns must have the same name in the 2 data sets.
+The trainset must have in addition an outcome column that you also define in input.
 }
