@@ -62,6 +62,6 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count) {
     select(-country, -variant, -collection_date,-lineage,-pangolin_version,-clade,-biosample,-SRA_accession,-accession,scorpio_call)
 
 
-  names(genomic_data_with_metadata)[names(metadata) %in% "variant_metadata"] <- col_merge
+  names(genomic_data_with_metadata)[names(genomic_data_with_metadata) %in% "variant_metadata"] <- col_merge
   return(genomic_data_with_metadata)
 }
