@@ -3,8 +3,8 @@
 #' @return
 #' @export
 #' @examples
-format_variant <- function(variants_aggregated, datedepart, datefin) {
-  date <- format_date_pandem(datedepart = datedepart, datefin = datefin)
+format_variant <- function(variants_aggregated, start, end) {
+  date <- format_date_pandem(datedepart = start, datefin = end)
   variants_aggregated <- right_join(x = variants_aggregated, y = date, "year_week")
   # GISAID and TESSy sources are encoded separately
   # => Merge both sources for non sequenced sequence
