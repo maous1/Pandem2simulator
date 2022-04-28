@@ -33,29 +33,35 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count) {
   # Create table with genomic data associated to sample metadata
   genomic_data_with_metadata <- tibble()
 
-  for (var in unique(genomic_data$variant)) {
-    tmp_variant <- genomic_data %>%
-      filter(variant == var)
-    tmp_sample_metadata <- metadata %>%
-      filter(variant_metadata == var)
-    metadata <- metadata %>%
-      filter(variant_metadata != var)
+  sample_genomic <- function(tmp_variant,tmp_sample_metadata)
+  {
     sample_genomic_data <- tmp_variant[sample(
       x = nrow(tmp_variant),
       size = nrow(tmp_sample_metadata),
       replace = TRUE
     ), ]
-    tmp <- cbind(sample_genomic_data, tmp_sample_metadata)
-    genomic_data_with_metadata <- rbind(genomic_data_with_metadata, tmp)
+    tmp <- cbind(tmp_sample_metadata,sample_genomic_data)
   }
 
-  genomic_data_with_metadata <- union_all(genomic_data_with_metadata, metadata)
+  genomic_data <- genomic_data %>% split(.$variant)
+  metadata_split = metadata %>% split(.$variant_metadata)
+  common_variant <- intersect(names(genomic_data), names(metadata_split))
+
+  genomic_data <- genomic_data[is.element(names(genomic_data), common_variant)]
+  metadata_NSQ <- do.call(rbind, metadata_split[!is.element(names(metadata_split), common_variant)])
+
+  metadata_SQ <- metadata_split[is.element(names(metadata_split), common_variant)]
+
+  genomic_data_with_metadata <- map2_df(.x = genomic_data, .y = metadata_SQ, .f = function(.x, .y) sample_genomic(tmp_variant = .x, tmp_sample_metadata = .y))
+
+
+
+  genomic_data_with_metadata <- union_all(genomic_data_with_metadata, metadata_NSQ)
   # Remove original country column, collection date and ecdc variant (redundant)
   genomic_data_with_metadata <- genomic_data_with_metadata %>%
-    select(-country, -variant, -collection_date)
+    select(-country, -variant, -collection_date,-lineage,-pangolin_version,-clade,-biosample,-SRA_accession,-accession,scorpio_call)
 
 
-  names(metadata)[names(metadata) %in% "variant_metadata"] <- paste0(col_merge, "_metadata")
-  names(genomic_data)[names(genomic_data) %in% "variant"] <- col_merge
+  names(genomic_data_with_metadata)[names(metadata) %in% "variant_metadata"] <- col_merge
   return(genomic_data_with_metadata)
 }
