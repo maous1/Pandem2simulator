@@ -6,7 +6,12 @@
 #' @return
 #' @export
 #' @examples
-mutation <- function(case_variants_genomic,numero) {
+mutation <- function(case_variants_genomic,position) {
+
+
+  if (is.numeric(position)) {
+
+
   delmissub<- function(numero,substitutions,missing,deletion)
   {
     startspike = numero
@@ -48,14 +53,7 @@ mutation <- function(case_variants_genomic,numero) {
     }
     return("No mutation")
   }
-
-  frame <- data.frame()
-  for (i in 1:length(case_variants_genomic$substitutions)) {
-    test = case_variants_genomic%>% slice(i) %>% mutate(!!as.character(numero) := delmissub(numero,substitutions,missing,deletions))
-    frame= union_all(frame,test)
+  case_variants_genomic = case_variants_genomic%>% rowwise() %>% mutate(!!as.character(numero) := delmissub(numero,substitutions,missing,deletions))
   }
-
-
-
-  return(frame)
+  return(case_variants_genomic)
 }

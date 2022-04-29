@@ -59,8 +59,9 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count) {
   genomic_data_with_metadata <- union_all(genomic_data_with_metadata, metadata_NSQ)
   # Remove original country column, collection date and ecdc variant (redundant)
   genomic_data_with_metadata <- genomic_data_with_metadata %>%
-    select(-country, -variant, -collection_date,-lineage,-pangolin_version,-clade,-biosample,-SRA_accession,-accession,scorpio_call)
-
+    select(-scorpio_call,-substitutions,-deletions,-missing,-insertions,-country, -variant, -collection_date,-lineage,-pangolin_version,-clade,-biosample,-SRA_accession,-accession)%>%
+    group_by_all() %>%
+    summarise(nb = n(), .groups = "drop")
 
   names(genomic_data_with_metadata)[names(genomic_data_with_metadata) %in% "variant_metadata"] <- col_merge
   return(genomic_data_with_metadata)
