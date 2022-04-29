@@ -4,10 +4,10 @@
 \alias{mutation}
 \title{mutation}
 \usage{
-mutation(case_variants_genomic, numero)
+mutation(case_variants_genomic, position)
 }
 \arguments{
-\item{numero}{}
+\item{position}{}
 }
 \value{
 
