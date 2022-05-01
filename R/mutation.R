@@ -91,7 +91,7 @@ mutation <- function(case_variants_genomic,position) {
           return("missing")
         }
       }
-      return("No mutation")
+      return("Wild Type")
     }
     case_variants_genomic = case_variants_genomic%>% rowwise() %>% mutate(!!position := delmissub(position,substitutions,missing,deletions))
     return(case_variants_genomic)
