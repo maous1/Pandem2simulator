@@ -6,10 +6,15 @@
 #' @return
 #' @export
 #' @examples
-mutation <- function(case_variants_genomic,position) {
+mutation <- function(case_variants_genomic,position = NULL,mutation = NULL) {
+  if (!is.null(position)) {
+    if (!is.null(mutation)) {
+      return("You can not enter position and mutation")
+    }
 
+  }
 
-  if (is.numeric(position)) {
+  if (!is.null(position)) {
 
 
     delmissub<- function(position,substitutions,missing,deletion)
@@ -55,7 +60,7 @@ mutation <- function(case_variants_genomic,position) {
     case_variants_genomic = case_variants_genomic%>% rowwise() %>% mutate(!!as.character(position) := delmissub(position,substitutions,missing,deletions))
     return(case_variants_genomic)
   }
-  if (is.character(position)) {
+  if (!is.null(mutation)) {
     delmissub<- function(position,substitutions,missing,deletion)
     {
       if (grepl(pattern = position,x = substitutions)) {
