@@ -11,7 +11,6 @@ mutation <- function(case_variants_genomic,position = NULL,mutation = NULL) {
     if (!is.null(mutation)) {
       return("You can not enter position and mutation")
     }
-
   }
 
   if (!is.null(position)) {
@@ -55,18 +54,18 @@ mutation <- function(case_variants_genomic,position = NULL,mutation = NULL) {
           return("missing")
         }
       }
-      return("No mutation")
+      return("Wild Type")
     }
     case_variants_genomic = case_variants_genomic%>% rowwise() %>% mutate(!!as.character(position) := delmissub(position,substitutions,missing,deletions))
     return(case_variants_genomic)
   }
   if (!is.null(mutation)) {
-    delmissub<- function(position,substitutions,missing,deletion)
+    delmissub<- function(mutation,substitutions,missing,deletion)
     {
-      if (grepl(pattern = position,x = substitutions)) {
-        return(position)
+      if (grepl(pattern = mutation,x = substitutions)) {
+        return(mutation)
       }
-      place = as.numeric(gsub("[^0-9]", "", position))
+      place = as.numeric(gsub("[^0-9]", "", mutation))
       if (!is.na(deletion)) {
 
 
@@ -98,7 +97,7 @@ mutation <- function(case_variants_genomic,position = NULL,mutation = NULL) {
       }
       return("Wild Type")
     }
-    case_variants_genomic = case_variants_genomic%>% rowwise() %>% mutate(!!position := delmissub(position,substitutions,missing,deletions))
+    case_variants_genomic = case_variants_genomic%>% rowwise() %>% mutate(!!mutation := delmissub(mutation,substitutions,missing,deletions))
     return(case_variants_genomic)
   }
 }
