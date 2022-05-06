@@ -2,8 +2,7 @@
 % Please edit documentation in R/add_genomic_data.R
 \name{add_genomic_data}
 \alias{add_genomic_data}
-\title{add_genomic_data : merge the metadata and genomic_data by the col_merge.
-Metadata and genomic_data must have the same name of the column that will be used for merge.}
+\title{Merge the metadata and genomic_data by the col_merge.}
 \usage{
 add_genomic_data(metadata, genomic_data, col_merge, count)
 }
@@ -20,6 +19,6 @@ add_genomic_data(metadata, genomic_data, col_merge, count)
 The function adds according to col_merge the columns of mutations coming from genomic_data in metadata
 }
 \description{
-add_genomic_data : merge the metadata and genomic_data by the col_merge.
+Merge the metadata and genomic_data by the col_merge.
 Metadata and genomic_data must have the same name of the column that will be used for merge.
 }

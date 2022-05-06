@@ -1,4 +1,6 @@
-#' Simulator: Predict the variant from a training set with a column time and a column variant to a testset with a column time
+#' Predict the variant from a training set
+#'
+#' Predict the variant from a training set with a column time and a column variant to a testset with a column time
 #' The trainset and the testset must have the columns geolocation, time, count. You define the name of these columns in input and the columns must have the same name in the 2 data sets.
 #' The trainset must have in addition an outcome column that you also define in input.
 #'

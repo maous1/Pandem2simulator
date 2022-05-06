@@ -1,4 +1,6 @@
-#' add_genomic_data : merge the metadata and genomic_data by the col_merge.
+#' Merge the metadata and genomic_data by the col_merge.
+#'
+#' Merge the metadata and genomic_data by the col_merge.
 #' Metadata and genomic_data must have the same name of the column that will be used for merge.
 #'
 #' @param metadata the dataset metadata containing the column col_merge

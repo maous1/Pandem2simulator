@@ -2,8 +2,7 @@
 % Please edit documentation in R/mutation.R
 \name{mutation}
 \alias{mutation}
-\title{mutation : The function adds a column to genomic_data containing the presence or not of a mutation.
-You have to choose between a position and a mutation, you can't complete both entries.}
+\title{The function adds a column to genomic_data with a special mutation}
 \usage{
 mutation(genomic_data, position = NULL, mutation = NULL)
 }
@@ -18,6 +17,6 @@ mutation(genomic_data, position = NULL, mutation = NULL)
 Adds a column to genomic_data with the analyzed mutation.
 }
 \description{
-mutation : The function adds a column to genomic_data containing the presence or not of a mutation.
+The function adds a column to genomic_data containing the presence or not of a mutation.
 You have to choose between a position and a mutation, you can't complete both entries.
 }

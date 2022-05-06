@@ -1,4 +1,6 @@
-#' mutation : The function adds a column to genomic_data containing the presence or not of a mutation.
+#' The function adds a column to genomic_data with a special mutation
+#'
+#' The function adds a column to genomic_data containing the presence or not of a mutation.
 #' You have to choose between a position and a mutation, you can't complete both entries.
 #'
 #' @param genomic_data The dataset containing the substitutions, deletions and missing data. The form of this dataset is based on the output of nextclade.
