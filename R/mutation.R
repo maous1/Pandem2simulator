@@ -1,12 +1,15 @@
-#' mutation
+#' mutation : The function adds a column to genomic_data containing the presence or not of a mutation.
+#' You have to choose between a position and a mutation, you can't complete both entries.
 #'
-#' @param case_variants_genomic
-#' @param position
+#' @param genomic_data The dataset containing the substitutions, deletions and missing data. The form of this dataset is based on the output of nextclade.
+#' @param position The position of the mutation you want to analyze. The input must be an integer. Example : 2022
+#' @param mutation The mutation you want to analyze. The entry must be a character. Example : "C2022G"
 #'
-#' @return
-#' @export
-#' @examples
-mutation <- function(case_variants_genomic,position = NULL,mutation = NULL) {
+#' @return Adds a column to genomic_data with the analyzed mutation.
+#' @export mutation
+#' @import dplyr
+#' @importFrom rlang :=
+mutation <- function(genomic_data,position = NULL,mutation = NULL) {
   if (!is.null(position)) {
     if (!is.null(mutation)) {
       return("You can not enter position and mutation")
@@ -56,14 +59,14 @@ mutation <- function(case_variants_genomic,position = NULL,mutation = NULL) {
       }
       return("Wild Type")
     }
-    case_variants_genomic = case_variants_genomic%>% rowwise() %>% mutate(!!as.character(position) := delmissub(position,substitutions,missing,deletions))
-    return(case_variants_genomic)
+    genomic_data = genomic_data%>% rowwise() %>% mutate(!!as.character(position) := delmissub(position,substitutions,missing,deletions))
+    return(genomic_data)
   }
   if (!is.null(mutation)) {
     delmissub<- function(mutation,substitutions,missing,deletion)
     {
       if (grepl(pattern = mutation,x = substitutions)) {
-        return(mutation)
+        return("Present")
       }
       place = as.numeric(gsub("[^0-9]", "", mutation))
       if (!is.na(deletion)) {
@@ -78,7 +81,7 @@ mutation <- function(case_variants_genomic,position = NULL,mutation = NULL) {
 
         if(any(frame2$inside==T)  )
         {
-          return("deletion")
+          return("Absent")
         }
       }
       if(!is.na(missing))
@@ -95,9 +98,9 @@ mutation <- function(case_variants_genomic,position = NULL,mutation = NULL) {
           return("missing")
         }
       }
-      return("Wild Type")
+      return("Absent")
     }
-    case_variants_genomic = case_variants_genomic%>% rowwise() %>% mutate(!!mutation := delmissub(mutation,substitutions,missing,deletions))
-    return(case_variants_genomic)
+    genomic_data = genomic_data%>% rowwise() %>% mutate(!!mutation := delmissub(mutation,substitutions,missing,deletions))
+    return(genomic_data)
   }
 }

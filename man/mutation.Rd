@@ -2,16 +2,22 @@
 % Please edit documentation in R/mutation.R
 \name{mutation}
 \alias{mutation}
-\title{mutation}
+\title{mutation : The function adds a column to genomic_data containing the presence or not of a mutation.
+You have to choose between a position and a mutation, you can't complete both entries.}
 \usage{
-mutation(case_variants_genomic, position)
+mutation(genomic_data, position = NULL, mutation = NULL)
 }
 \arguments{
-\item{position}{}
+\item{genomic_data}{The dataset containing the substitutions, deletions and missing data. The form of this dataset is based on the output of nextclade.}
+
+\item{position}{The position of the mutation you want to analyze. The input must be an integer. Example : 2022}
+
+\item{mutation}{The mutation you want to analyze. The entry must be a character. Example : "C2022G"}
 }
 \value{
-
+Adds a column to genomic_data with the analyzed mutation.
 }
 \description{
-mutation
+mutation : The function adds a column to genomic_data containing the presence or not of a mutation.
+You have to choose between a position and a mutation, you can't complete both entries.
 }

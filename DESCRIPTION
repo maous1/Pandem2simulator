@@ -9,7 +9,7 @@ Authors@R:
       person("Jean-Luc", "Gala", , "jean-luc.gala@uclouvain.be", role = c("aut"))
       )
 Description: this package was created for the Pandem2 project.  
-License: MIT
+License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
@@ -17,4 +17,5 @@ Suggests:
     rmarkdown,
     knitr
 VignetteBuilder: knitr
-Depends: class,dplyr,purrr , lubridate ,splitstackshape
+Depends: R (>= 3.50)
+Imports: rlang , class,dplyr,purrr , lubridate ,splitstackshape

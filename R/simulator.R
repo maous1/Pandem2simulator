@@ -8,12 +8,16 @@
 #' @param geolocalisation the name of the column where the different regions are located
 #' @param count the name of the column used to desaggregate the data
 #' @param outcome the name of the trainset column where the metadata to be added to the testset is located
-#' @param factor
+#' @param factor The number of sequence used by time for the trainset to reduce the execution time
 #'
 #'
 #' @return The function returns the testset dataset with an outcome column based on the trainset. The output dataset is well aggregated.
-#' @export
-#' @examples
+#' @export simulator
+#' @import class
+#' @import dplyr
+#' @import purrr
+#' @import lubridate
+#' @importFrom splitstackshape expandRows
 simulator <- function(trainset, testset, time, geolocalisation, outcome, count, factor) {
   if (!any(names(trainset) %in% geolocalisation)) {
     if (!any(names(testset) %in% geolocalisation)) {

@@ -1,14 +1,17 @@
-#' Title
+#' add_genomic_data : merge the metadata and genomic_data by the col_merge.
+#' Metadata and genomic_data must have the same name of the column that will be used for merge.
 #'
-#' @param metadata
-#' @param genomic_data
-#' @param col_merge
-#' @param count
+#' @param metadata the dataset metadata containing the column col_merge
+#' @param genomic_data The dataset containing the substitutions, deletions and missing data. The form of this dataset is based on the output of nextclade and differents mutation.
+#' @param col_merge The name of the column that will be used to merge the data
+#' @param count the name of the column used to desaggregate the metadata
 #'
-#' @return
-#' @export
+#' @return The function adds according to col_merge the columns of mutations coming from genomic_data in metadata
+#' @export add_genomic_data
+#' @import dplyr
+#' @import purrr
+#' @importFrom splitstackshape expandRows
 #'
-#' @examples
 add_genomic_data <- function(metadata, genomic_data, col_merge, count) {
   if (!any(names(metadata) %in% col_merge)) {
     if (!any(names(genomic_data) %in% col_merge)) {
