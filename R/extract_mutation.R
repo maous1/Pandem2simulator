@@ -8,10 +8,10 @@
 #' @param mutation The mutation you want to analyze. The entry must be a character. Example : "C2022G"
 #'
 #' @return Adds a column to genomic_data with the analyzed mutation.
-#' @export mutation
+#' @export extract_mutation
 #' @import dplyr
 #' @importFrom rlang :=
-mutation <- function(genomic_data,position = NULL,mutation = NULL) {
+extract_mutation <- function(genomic_data,position = NULL,mutation = NULL) {
   if (!is.null(position)) {
     if (!is.null(mutation)) {
       return("You can not enter position and mutation")
