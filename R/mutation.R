@@ -30,7 +30,7 @@ mutation <- function(genomic_data,position = NULL,mutation = NULL) {
         return(frame1$substitutions)
       }
 
-      if (!is.na(deletion)) {
+      if (!is.na(deletion) & ""!=deletion) {
 
 
         frame2 <-  data.frame(deletions = unlist(strsplit(deletion,','))) %>%
@@ -45,7 +45,7 @@ mutation <- function(genomic_data,position = NULL,mutation = NULL) {
           return("deletion")
         }
       }
-      if(!is.na(missing))
+      if(!is.na(missing) & ""!=missing)
       {
         frame3 <-  data.frame(missing = unlist(strsplit(missing,','))) %>%
           group_by(missing) %>%
@@ -71,7 +71,7 @@ mutation <- function(genomic_data,position = NULL,mutation = NULL) {
         return("Present")
       }
       place = as.numeric(gsub("[^0-9]", "", mutation))
-      if (!is.na(deletion)) {
+      if (!is.na(deletion)& ""!=deletion) {
 
 
         frame2 <-  data.frame(deletions = unlist(strsplit(deletion,','))) %>%
@@ -86,7 +86,7 @@ mutation <- function(genomic_data,position = NULL,mutation = NULL) {
           return("Absent")
         }
       }
-      if(!is.na(missing))
+      if(!is.na(missing) & ""!=missing)
       {
         frame3 <-  data.frame(missing = unlist(strsplit(missing,','))) %>%
           group_by(missing) %>%
@@ -102,7 +102,11 @@ mutation <- function(genomic_data,position = NULL,mutation = NULL) {
       }
       return("Absent")
     }
+
     genomic_data = genomic_data%>% rowwise() %>% mutate(!!mutation := delmissub(mutation,substitutions,missing,deletions))
+
+
     return(genomic_data)
   }
 }
+
