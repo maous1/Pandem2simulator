@@ -18,4 +18,5 @@ Suggests:
     knitr
 VignetteBuilder: knitr
 Depends: R (>= 3.50)
-Imports: rlang , class,dplyr,purrr , lubridate ,splitstackshape
+Imports: rlang , class,dplyr,purrr , lubridate ,splitstackshape,tidyr,usethis
+LazyData: true

@@ -12,6 +12,7 @@
 #' @export add_genomic_data
 #' @import dplyr
 #' @import purrr
+#' @import tidyr
 #' @importFrom splitstackshape expandRows
 #'
 add_genomic_data <- function(metadata, genomic_data, col_merge, count) {
@@ -68,6 +69,13 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count) {
     group_by_all() %>%
     summarise(nb = n(), .groups = "drop")
 
-  names(genomic_data_with_metadata)[names(genomic_data_with_metadata) %in% "variant_metadata"] <- col_merge
-  return(genomic_data_with_metadata)
+  genomic_data_with_metadata_long <- genomic_data_with_metadata %>%
+    pivot_longer(cols = -c(names(metadata),nb),names_to = "mutation",values_to = "presence") %>%
+    group_by_at(names(.)[names(.) != "nb"])%>%summarise(nb = sum(nb))
+
+
+  names(genomic_data_with_metadata_long)[names(genomic_data_with_metadata_long) %in% "variant_metadata"] <- col_merge
+
+
+  return(genomic_data_with_metadata_long)
 }
