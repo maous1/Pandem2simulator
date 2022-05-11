@@ -5,11 +5,12 @@
 #' @return
 #' @export
 #' @import usethis
+#' @import dplyr
 #' @examples
 format_genomic <- function(file)
 {
   genomic <- read.csv(file,sep = "\t")
-  data("Genomic_data_ECDCvariants")
+  data("test")
 
   genomic <- genomic %>% select(collection_date, variant,substitutions,missing,deletions,insertions) %>% rename(year_week = collection_date)
 
@@ -17,6 +18,8 @@ format_genomic <- function(file)
 
   genomic <- left_join(x = genomic, y = date, "year_week") %>% filter(!is.na(time))
 
-  usethis::use_data()
+  genomic_data <- union_all(genomic_data,genomic)
+
+  usethis::use_data(genomic_data)
 
 }
