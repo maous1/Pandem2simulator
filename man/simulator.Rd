@@ -4,7 +4,16 @@
 \alias{simulator}
 \title{Predict the variant from a training set}
 \usage{
-simulator(trainset, testset, time, geolocalisation, outcome, count, factor)
+simulator(
+  trainset,
+  testset,
+  time,
+  geolocalisation,
+  outcome,
+  count,
+  factor,
+  bymonth = T
+)
 }
 \arguments{
 \item{trainset}{the dataset used to train the classifier}
@@ -20,6 +29,8 @@ simulator(trainset, testset, time, geolocalisation, outcome, count, factor)
 \item{count}{the name of the column used to desaggregate the data}
 
 \item{factor}{The number of sequence used by time for the trainset to reduce the execution time}
+
+\item{bymonth}{if you want to split the trainset by month}
 }
 \value{
 The function returns the testset dataset with an outcome column based on the trainset. The output dataset is well aggregated.

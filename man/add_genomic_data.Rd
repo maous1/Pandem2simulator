@@ -4,7 +4,7 @@
 \alias{add_genomic_data}
 \title{Merge the metadata and genomic_data by the col_merge.}
 \usage{
-add_genomic_data(metadata, genomic_data, col_merge, count)
+add_genomic_data(metadata, genomic_data, col_merge, count, time)
 }
 \arguments{
 \item{metadata}{the dataset metadata containing the column col_merge}
@@ -14,6 +14,8 @@ add_genomic_data(metadata, genomic_data, col_merge, count)
 \item{col_merge}{The name of the column that will be used to merge the data}
 
 \item{count}{the name of the column used to desaggregate the metadata}
+
+\item{time}{the name of the column where the dates are found format = "\%Y-\%m-\%d"}
 }
 \value{
 The function adds according to col_merge the columns of mutations coming from genomic_data in metadata

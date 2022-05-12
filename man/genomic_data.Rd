@@ -7,11 +7,13 @@
 \format{
 A data frame :
 \describe{
+\item{year_week}{The year and the week}
 \item{variant}{The sars cov 2 variant}
 \item{substitutions}{Numbers of positions of substitutions with mutation}
 \item{deletions}{Numbers of deletion positions}
 \item{insertions}{Numbers of the positions of the insertions}
 \item{missing}{The numbers of the positions that have not been sequenced}
+\item{time}{The day of the year in  = "\%Y-\%m-\%d"}
 }
 }
 \usage{

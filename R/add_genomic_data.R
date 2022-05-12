@@ -7,15 +7,17 @@
 #' @param genomic_data The dataset containing the substitutions, deletions and missing data. The form of this dataset is based on the output of nextclade and differents mutation.
 #' @param col_merge The name of the column that will be used to merge the data
 #' @param count the name of the column used to desaggregate the metadata
+#' @param time the name of the column where the dates are found format = "%Y-%m-%d"
 #'
 #' @return The function adds according to col_merge the columns of mutations coming from genomic_data in metadata
 #' @export add_genomic_data
 #' @import dplyr
 #' @import purrr
 #' @import tidyr
+#' @import tibble
 #' @importFrom splitstackshape expandRows
 #'
-add_genomic_data <- function(metadata, genomic_data, col_merge, count) {
+add_genomic_data <- function(metadata, genomic_data, col_merge, count, time) {
   if (!any(names(metadata) %in% col_merge)) {
     if (!any(names(genomic_data) %in% col_merge)) {
       stop("wrong col_merge in genomic_data and metadata")
@@ -25,56 +27,28 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count) {
   if (!any(names(genomic_data) %in% col_merge)) {
     stop("wrong col_merge in genomic_data")
   }
-
   if (!any(names(metadata) %in% count)) {
     stop("wrong count in metadata")
   }
 
+  genomic_data <- genomic_data %>% rownames_to_column(var = "cas") %>%select(-c(substitutions,deletions,missing,insertions))
+  genomic_data$nb <- rep(1,length(genomic_data$cas))
+  genomic_data <-genomic_data%>% rename(!!count := nb)
 
-  names(metadata)[names(metadata) %in% col_merge] <- "variant_metadata"
-  names(genomic_data)[names(genomic_data) %in% col_merge] <- "variant"
+  case_variants_aggregated_cas <- simulator(bymonth = F,
+                                            trainset = genomic_data,
+                                            testset = case_variants_aggregated,
+                                            time = time,geolocalisation = col_merge,
+                                            outcome = "cas",
+                                            count = count,
+                                            factor = 2000)
+  genomic_data <- genomic_data %>% select(-c(year_week,time,variant,!!count))
 
-  metadata <- expandRows(metadata, count = count, drop = T)
-
-  # Create table with genomic data associated to sample metadata
-  genomic_data_with_metadata <- tibble()
-
-  sample_genomic <- function(tmp_variant,tmp_sample_metadata)
-  {
-    sample_genomic_data <- tmp_variant[sample(
-      x = nrow(tmp_variant),
-      size = nrow(tmp_sample_metadata),
-      replace = TRUE
-    ), ]
-    tmp <- cbind(tmp_sample_metadata,sample_genomic_data)
-  }
-
-  genomic_data <- genomic_data %>% split(.$variant)
-  metadata_split = metadata %>% split(.$variant_metadata)
-  common_variant <- intersect(names(genomic_data), names(metadata_split))
-
-  genomic_data <- genomic_data[is.element(names(genomic_data), common_variant)]
-  metadata_NSQ <- do.call(rbind, metadata_split[!is.element(names(metadata_split), common_variant)])
-
-  metadata_SQ <- metadata_split[is.element(names(metadata_split), common_variant)]
-
-  genomic_data_with_metadata <- map2_df(.x = genomic_data, .y = metadata_SQ, .f = function(.x, .y) sample_genomic(tmp_variant = .x, tmp_sample_metadata = .y))
-
-
-
-  genomic_data_with_metadata <- union_all(genomic_data_with_metadata, metadata_NSQ)
-  # Remove original country column, collection date and ecdc variant (redundant)
-  genomic_data_with_metadata <- genomic_data_with_metadata %>%
-    select(-substitutions,-deletions,-missing,-insertions, -variant)%>%
-    group_by_all() %>%
-    summarise(nb = n(), .groups = "drop")
+  genomic_data_with_metadata <- case_variants_aggregated_cas %>% left_join(genomic_data,by = "cas")%>% select(-cas)
 
   genomic_data_with_metadata_long <- genomic_data_with_metadata %>%
-    pivot_longer(cols = -c(names(metadata),nb),names_to = "mutation",values_to = "presence") %>%
-    group_by_at(names(.)[names(.) != "nb"])%>%summarise(nb = sum(nb))
-
-
-  names(genomic_data_with_metadata_long)[names(genomic_data_with_metadata_long) %in% "variant_metadata"] <- col_merge
+    pivot_longer(cols = -c(names(metadata),!!count),names_to = "mutation",values_to = "presence") %>%
+    group_by_at(names(.)[names(.) != count])%>%summarise(!!count := sum(across(all_of(count))))
 
 
   return(genomic_data_with_metadata_long)
