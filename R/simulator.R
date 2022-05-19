@@ -64,8 +64,8 @@ simulator <- function(trainset, testset, time, geolocalisation, outcome, count, 
 
   ####### split the dataframe in a list of dataframe (one per geolocalisation) and keep common geolocalisation
 
-  trainset_list <- trainset %>% split(.$geolocalisation)
-  testset_list <- testset %>% split(.$geolocalisation)
+  trainset_list <- na.omit(trainset) %>% split(.$geolocalisation)
+  testset_list <- na.omit(testset) %>% filter(new_cases >0)%>% split(.$geolocalisation)
 
   common_geo <- intersect(names(trainset_list), names(testset_list))
   if (is_empty(common_geo)) {
@@ -114,12 +114,15 @@ simulator <- function(trainset, testset, time, geolocalisation, outcome, count, 
     testset_list <- unlist(testset_list, recursive = F)
 
     common_date <- intersect(names(trainset_list), names(testset_list))
-    if (is_empty(common_geo)) {
-      stop("not the same country")
+    if (is_empty(common_date)) {
+      stop("not the same date")
     }
+
 
     message(paste(c("Date exclusive to trainset : ", setdiff(names(trainset_list), names(testset_list))), collapse = " "))
     message(paste(c("Date exclusive to testset : ", setdiff(names(testset_list), names(trainset_list))), collapse = " "))
+    trainset_list <- trainset_list[is.element(names(trainset_list), common_date)]
+    testset_list <- testset_list[is.element(names(testset_list), common_date)]
 
   }
 
@@ -166,12 +169,10 @@ simulator <- function(trainset, testset, time, geolocalisation, outcome, count, 
       select(-c(time_jitter, time_num)) %>%
       group_by_all() %>%
       summarise(new_cases = n(), .groups = "drop")
-
     return(testset_1geo)
   }
 
   ###### apply the knn prediction on each compoent of the lists
-
   testset_predicted <- map2_df(.x = trainset_list, .y = testset_list, .f = function(.x, .y) simulator_1geo(trainset_1geo = .x, testset_1geo = .y, time = "time", geolocalisation = "geolocalisation", outcome = outcome, count = "new_cases"))
 
   testset_predicted <- union_all(testset_predicted,testset_nosimulated)
