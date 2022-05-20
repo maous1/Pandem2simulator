@@ -8,6 +8,7 @@
 #' @param col_merge The name of the column that will be used to merge the data
 #' @param count the name of the column used to desaggregate the metadata
 #' @param time the name of the column where the dates are found format = "%Y-%m-%d"
+#' @param mutation
 #'
 #' @return The function adds according to col_merge the columns of mutations coming from genomic_data in metadata
 #' @export add_genomic_data
@@ -17,7 +18,7 @@
 #' @import tibble
 #' @importFrom splitstackshape expandRows
 #'
-add_genomic_data <- function(metadata, genomic_data, col_merge, count, time) {
+add_genomic_data <- function(metadata, genomic_data, col_merge, count, time, mutation = T) {
   if (!any(names(metadata) %in% col_merge)) {
     if (!any(names(genomic_data) %in% col_merge)) {
       stop("wrong col_merge in genomic_data and metadata")
@@ -30,26 +31,29 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count, time) {
   if (!any(names(metadata) %in% count)) {
     stop("wrong count in metadata")
   }
-
-  genomic_data <- genomic_data %>% rownames_to_column(var = "cas") %>%select(-c(substitutions,deletions,missing,insertions))
-  genomic_data$nb <- rep(1,length(genomic_data$cas))
-  genomic_data <-genomic_data%>% rename(!!count := nb)
+  genomic_data <- genomic_data %>% rownames_to_column(var = "cas")
+  genomic_data_cas <- genomic_data %>%select(cas,time,!!col_merge)
+  genomic_data_cas$nb <- rep(1,length(genomic_data_cas$cas))
+  genomic_data_cas <-genomic_data_cas%>% rename(!!count := nb)
 
   case_variants_aggregated_cas <- simulator(bymonth = F,
-                                            trainset = genomic_data,
+                                            trainset = genomic_data_cas,
                                             testset = case_variants_aggregated,
-                                            time = time,geolocalisation = col_merge,
+                                            time = time,
+                                            geolocalisation = col_merge,
                                             outcome = "cas",
                                             count = count,
                                             factor = 2000)
-  genomic_data <- genomic_data %>% select(-c(year_week,time,variant,!!count))
+  genomic_data <- genomic_data %>% select(-c(year_week,time,variant))
 
   genomic_data_with_metadata <- case_variants_aggregated_cas %>% left_join(genomic_data,by = "cas")%>% select(-cas)
 
-  genomic_data_with_metadata_long <- genomic_data_with_metadata %>%
-    pivot_longer(cols = -c(names(metadata),!!count),names_to = "mutation",values_to = "presence") %>%
-    group_by_at(names(.)[names(.) != count])%>%summarise(!!count := sum(across(all_of(count))))
+  if(mutation ==T) {
+    genomic_data_with_metadata_long <- genomic_data_with_metadata %>%
+      pivot_longer(cols = -c(names(metadata),!!count),names_to = "mutation",values_to = "presence") %>%
+      group_by_at(names(.)[names(.) != count])%>%summarise(!!count := sum(across(all_of(count))))
+    return(genomic_data_with_metadata_long)
+  }
 
-
-  return(genomic_data_with_metadata_long)
+  return(genomic_data_with_metadata)
 }
