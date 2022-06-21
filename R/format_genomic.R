@@ -38,12 +38,9 @@ format_genomic <- function(file,olddata=data.frame())
 
     return(result)
   }
+date <- format_date_pandem(start = "2020-12-01",end = Sys.Date())
 
-
-
-  date <- format_date_pandem(start = "2020-12-01",end = Sys.Date())
-
-  genomic <- left_join(x = genomic, y = date, "year_week") %>% filter(!is.na(time))
+genomic <- left_join(x = genomic, y = date, "year_week") %>% filter(!is.na(time))
 
 
 
