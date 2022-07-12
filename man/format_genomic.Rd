@@ -9,9 +9,6 @@ format_genomic(file, olddata = data.frame())
 \arguments{
 \item{olddata}{}
 }
-\value{
-
-}
 \description{
 Title
 }

@@ -2,8 +2,9 @@
 #'
 #' @return
 #' @export
-#'
+#' @import reticulate
 #' @examples
+
 environnement <- function()
 {
   condalist = conda_list()
