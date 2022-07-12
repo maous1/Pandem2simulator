@@ -1,17 +1,21 @@
-library(dplyr)
-library(tidyr)
-library(lubridate)
-library(seqinr)
-
-#Pour tous les input, chemin relatif par rapport à celui du script
-#ncbitools.dir : suppose que datasets et dataformat soit dans le meme dossier
-#nextclade.data.dir : dossier nextclade avec tous les fichiers de paramètres pour Sars-Cov-2
-#nextclade.exfile : fichier executable nextclade
-
+#' Title
+#'
+#' @param ncbitools.dir : : suppose que datasets et dataformat soit dans le meme dossier
+#' @param nextclade.data.dir : dossier nextclade avec tous les fichiers de paramètres pour Sars-Cov-2
+#' @param nextclade.exfile : fichier executable nextclade
+#'
+#' @return
+#' @export
+#'
+#' @import tidyr
+#' @import dplyr
+#' @import lubridate
+#' @import seqinr
+#'
+#' @examples
 download_genomic_data <- function(ncbitools.dir, nextclade.data.dir, nextclade.exfile) {
 
   #Download SARS-CoV-2 genomes from NCBI (Europe)
-  ncbitools.dir <- '../Téléchargements/'
   myarg <- 'download virus genome taxon sars-cov-2 --host human --geo-location europe --complete-only --exclude-cds --exclude-protein' #--released-since 05/01/2022
   system2(command=paste0(ncbitools.dir, 'datasets'), args=myarg)
   system2("unzip", args = c("-o", "ncbi_dataset.zip"), stdout = TRUE)
@@ -41,7 +45,6 @@ download_genomic_data <- function(ncbitools.dir, nextclade.data.dir, nextclade.e
   dir.create("Nextclade_results", showWarnings = FALSE)
   output.file.nextclade <- c('Nextclade_results/res_Nextclade.tsv')
   output.dir.nextclade <- c('Nextclade_results')
-  nextclade.data.dir <- c('data/sars-cov-2/') #a supprimer
   myarg <- paste0('--input-fasta ncbi_dataset/data/genomic_filter.fna --input-dataset ', nextclade.data.dir,' --input-root-seq ', paste0(nextclade.data.dir, 'reference.fasta'), ' --input-tree ', paste0(nextclade.data.dir, 'tree.json'), ' --input-qc-config ', paste0(nextclade.data.dir, 'qc.json'), ' --input-gene-map ', paste0(nextclade.data.dir, 'genemap.gff'), ' --output-tsv ', output.file.nextclade, ' --output-dir ', output.dir.nextclade)
   nextclade.exfile <- '../Téléchargements/nextclade-Linux-x86_64' #a supprimer
   system2(command=nextclade.exfile, args=myarg)
@@ -54,5 +57,3 @@ download_genomic_data <- function(ncbitools.dir, nextclade.data.dir, nextclade.e
   #Save output files
   return(genomic.data.final)
 }
-
-download_genomic_data ('../Téléchargements/', 'data/sars-cov-2/','../Téléchargements/nextclade-Linux-x86_64')
