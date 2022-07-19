@@ -3,7 +3,7 @@
 #' @return
 #' @export
 #' @import reticulate
-#' @examples
+#' @examplesa
 
 environnement <- function()
 {
@@ -12,8 +12,8 @@ environnement <- function()
   {
     conda_create(envname = "Pandem2")
     conda_install(envname = "Pandem2",packages = "conda")
-    conda_install(envname = "Pandem2",forge = T,packages = "ncbi-datasets-cli")
-    conda_install(envname = "Pandem2",packages = "nextclade",channel="bioconda")
+    conda_install(envname = "Pandem2",forge = T,packages = "ncbi-datasets-cli"="13.28.1")
+    conda_install(envname = "Pandem2",packages = "nextclade",channel="bioconda",version="2.2.0")
 
   }
   use_condaenv(condaenv = "Pandem2")

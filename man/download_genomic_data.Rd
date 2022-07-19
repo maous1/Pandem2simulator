@@ -4,14 +4,10 @@
 \alias{download_genomic_data}
 \title{Title}
 \usage{
-download_genomic_data(ncbitools.dir, nextclade.data.dir, nextclade.exfile)
+download_genomic_data(ecdcdata, colname)
 }
 \arguments{
-\item{ncbitools.dir}{: : suppose que datasets et dataformat soit dans le meme dossier}
-
-\item{nextclade.data.dir}{: dossier nextclade avec tous les fichiers de paramètres pour Sars-Cov-2}
-
-\item{nextclade.exfile}{: fichier executable nextclade}
+\item{colname}{}
 }
 \description{
 Title
