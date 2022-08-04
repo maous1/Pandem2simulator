@@ -12,11 +12,11 @@ Description: this package was created for the Pandem2 project.
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Suggests: 
     rmarkdown,
     knitr
 VignetteBuilder: knitr
 Depends: R (>= 3.50)
-Imports: rlang , class,dplyr,purrr , lubridate ,splitstackshape,tidyr,usethis,tibble,reticulate
+Imports: rlang , class,dplyr,purrr , lubridate ,splitstackshape,tidyr,usethis,tibble,reticulate,seqinr
 LazyData: true
