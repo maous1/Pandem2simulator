@@ -4,10 +4,10 @@
 \alias{download_genomic_data}
 \title{Title}
 \usage{
-download_genomic_data(ecdcdata, colname)
+download_genomic_data(ecdcdata, colname, prefix)
 }
 \arguments{
-\item{colname}{}
+\item{prefix}{}
 }
 \description{
 Title

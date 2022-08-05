@@ -1,20 +1,16 @@
 #' La fonction génére un environnement conda pour l'utilisation des outils nextclade et ncbi datasets
 #'
+#' @param prefix
+#'
 #' @return
 #' @export
 #' @import reticulate
 #' @examplesa
 
-environnement <- function()
+environnement <- function(prefix)
 {
-  condalist = conda_list()
-  if(!any(condalist$name == "Pandem2"))
-  {
-    conda_create(envname = "Pandem2")
-    conda_install(envname = "Pandem2",packages = "conda")
-    conda_install(envname = "Pandem2",forge = T,packages = "ncbi-datasets-cli"="13.28.1")
-    conda_install(envname = "Pandem2",packages = "nextclade",channel="bioconda",version="2.2.0")
-
-  }
-  use_condaenv(condaenv = "Pandem2")
+  conda_create(envname = paste0("./",prefix))
+  conda_install(envname = paste0("./",prefix),packages = "conda")
+  conda_install(envname = paste0("./",prefix),forge = T,packages = "ncbi-datasets-cli",version="13.28.1")
+  conda_install(envname = paste0("./",prefix),packages = "nextclade",channel="bioconda",version="2.2.0")
 }

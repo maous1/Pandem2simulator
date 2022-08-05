@@ -4,7 +4,10 @@
 \alias{environnement}
 \title{La fonction génére un environnement conda pour l'utilisation des outils nextclade et ncbi datasets}
 \usage{
-environnement()
+environnement(prefix)
+}
+\arguments{
+\item{prefix}{}
 }
 \description{
 La fonction génére un environnement conda pour l'utilisation des outils nextclade et ncbi datasets

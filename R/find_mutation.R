@@ -8,7 +8,7 @@
 #' @examples
 find_mutation <- function(allmutation){
   alldata <- data.frame()
-  for (i in 1:length(allmutation$year_week)) {
+  for (i in 1:dim(allmutation)[1]) {
     current <- allmutation[i,]
 
     frame <- data.frame(substitutions = unlist(strsplit(current$substitutions,split = ","))) %>%
@@ -21,7 +21,7 @@ find_mutation <- function(allmutation){
   }
 
   alldata_deletion <- data.frame()
-  for (i in 1:length(alldata$year_week)) {
+  for (i in 1:dim(allmutation)[1]) {
 
     current<- alldata[i,]
     frame_deletion <-  data.frame(deletions = unlist(strsplit(current$deletions,','))) %>%
@@ -57,5 +57,7 @@ find_mutation <- function(allmutation){
     }
     alldata_deletion = union_all(alldata_deletion,current)
   }
+  alldata_deletion <- mutate_all(alldata_deletion, ~replace(., is.na(.), "wild type"))
+
   return(alldata_deletion)
 }

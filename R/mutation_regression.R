@@ -8,11 +8,9 @@
 #'
 #' @return
 #' @export
-#'
+#' @import rlang
 #' @examples
 mutation_regression <- function(data,numero_mutation,start,end,mutation){
-
-  library(rlang)
   data_regression = data %>% select(time,!!sym(numero_mutation))%>%
     filter(between(x = as.Date(time),left = as.Date(start),right = as.Date( end)))%>%
     filter(!!sym(numero_mutation) != "missing")%>%

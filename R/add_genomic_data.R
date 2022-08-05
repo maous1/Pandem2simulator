@@ -38,7 +38,7 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count, time, mut
 
   case_variants_aggregated_cas <- simulator(bymonth = F,
                                             trainset = genomic_data_cas,
-                                            testset = case_variants_aggregated,
+                                            testset = metadata,
                                             time = time,
                                             geolocalisation = col_merge,
                                             outcome = "cas",
@@ -48,12 +48,12 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count, time, mut
 
   genomic_data_with_metadata <- case_variants_aggregated_cas %>% left_join(genomic_data,by = "cas")%>% select(-cas)
 
-  if(mutation ==T) {
-    genomic_data_with_metadata_long <- genomic_data_with_metadata %>%
-      pivot_longer(cols = -c(names(metadata),!!count),names_to = "mutation",values_to = "presence") %>%
-      group_by_at(names(.)[names(.) != count])%>%summarise(!!count := sum(across(all_of(count))))
-    return(genomic_data_with_metadata_long)
-  }
-
+  # if(mutation ==T) {
+  #   genomic_data_with_metadata_long <- genomic_data_with_metadata %>%
+  #     pivot_longer(cols = -c(names(metadata),!!count),names_to = "mutation",values_to = "presence") %>%
+  #     group_by_at(names(.)[names(.) != count])%>%summarise(!!count := sum(across(all_of(count))))
+  #   return(genomic_data_with_metadata_long)
+  # }
+  #
   return(genomic_data_with_metadata)
 }
