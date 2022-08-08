@@ -15,7 +15,7 @@ find_mutation <- function(allmutation){
       mutate(place = gsub("[^0-9]", "", substitutions)) %>%mutate(nucleotide = gsub("[0-9]", "", substitutions)) %>% select(-substitutions) %>%
       pivot_wider(names_from = "place",values_from = "nucleotide")
 
-    current <- data_frame(current,frame) %>% select(-substitutions)
+    current <- tibble::data_frame(current,frame) %>% select(-substitutions)
     alldata <- union_all(alldata,current)
 
   }
@@ -57,7 +57,8 @@ find_mutation <- function(allmutation){
     }
     alldata_deletion = union_all(alldata_deletion,current)
   }
-  alldata_deletion <- mutate_all(alldata_deletion, ~replace(., is.na(.), "wild type"))
+
+  alldata_deletion <- alldata_deletion%>% filter(!is.na(time)) %>%mutate_all( ~replace(., is.na(.), "wild type")) %>% select(-c(missing,deletions,insertions))
 
   return(alldata_deletion)
 }
