@@ -42,6 +42,7 @@ select_mutation<- function(data,dateStart,dateEnd,count,number)
   test = datavaleur %>%  mutate(z.value = abs(z.value))%>%arrange(z.value)%>% slice(1:number)
 
   data = data %>% select(c(country_code,year_week,time,age_group,variant,!!as.character(test$position))) %>%
-    pivot_longer(!!as.character(test$position), names_to = "position", values_to = "mutation")
+    pivot_longer(!!as.character(test$position), names_to = "position", values_to = "mutation") %>% group_by_all() %>%
+    summarise(new_cases = n(), .groups = "drop")
   return(data)
 }

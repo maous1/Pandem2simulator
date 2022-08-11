@@ -55,6 +55,6 @@ download_genomic_data <- function(ecdcdata, colname,prefix) {
   sapply(paste0("ncbi_dataset", 1:length(list.ecdc.variants), ".zip"), unlink)
   unlink("ncbi_dataset*", recursive = TRUE)
   unlink("data_report_formated-lineage*", recursive = TRUE)
-  return(genomic_data)
+  write.csv(x = genomic_data,file = "genomic_data.csv")
 
 }
