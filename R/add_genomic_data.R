@@ -32,7 +32,7 @@ add_genomic_data <- function(metadata, genomic_data, col_merge, count, time, mut
     stop("wrong count in metadata")
   }
   genomic_data <- genomic_data %>% rownames_to_column(var = "cas")
-  genomic_data_cas <- genomic_data %>%select(cas,time,!!col_merge)
+  genomic_data_cas <- genomic_data %>%select(cas,!!time,!!col_merge)
   genomic_data_cas$nb <- rep(1,length(genomic_data_cas$cas))
   genomic_data_cas <-genomic_data_cas%>% rename(!!count := nb)
 

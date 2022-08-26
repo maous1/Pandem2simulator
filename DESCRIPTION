@@ -18,5 +18,5 @@ Suggests:
     knitr
 VignetteBuilder: knitr
 Depends: R (>= 3.50)
-Imports: rlang , class,dplyr,purrr , lubridate ,splitstackshape,tidyr,usethis,tibble,reticulate,seqinr,Biostrings
+Imports: rlang , class,dplyr,purrr , lubridate ,splitstackshape,tidyr,tibble,reticulate,seqinr,Biostrings
 LazyData: true

@@ -4,10 +4,16 @@
 \alias{download_genomic_data}
 \title{Title}
 \usage{
-download_genomic_data(ecdcdata, colname, prefix)
+download_genomic_data(
+  ecdcdata,
+  variant_colname,
+  path_dataformat,
+  path_dataset,
+  path_nextclade
+)
 }
 \arguments{
-\item{prefix}{}
+\item{path_nextclade}{}
 }
 \description{
 Title

@@ -58,5 +58,4 @@ download_genomic_data <- function(ecdcdata, variant_colname,path_dataformat,path
   unlink("ncbi_dataset*", recursive = TRUE)
   unlink("data_report_formated-lineage*", recursive = TRUE)
   write.csv(x = genomic_data,file = "genomic_data.csv")
-
 }
