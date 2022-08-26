@@ -1,8 +1,10 @@
 #' Title
 #'
 #' @param ecdcdata
-#' @param colname
-#' @param prefix
+#' @param variant_colname
+#' @param path_dataformat
+#' @param path_dataset
+#' @param path_nextclade
 #'
 #' @return
 #' @export
@@ -14,18 +16,18 @@
 #' @import Biostrings
 #'
 #' @examples
-download_genomic_data <- function(ecdcdata, colname,prefix) {
+download_genomic_data <- function(ecdcdata, variant_colname,path_dataformat,path_dataset,path_nextclade) {
   ###Filters : 1. list of ecdc variant
-  list.ecdc.variants <- ecdcdata%>% ungroup() %>% select(!!colname) %>% distinct %>% filter(!grepl("SGTF|XF|XD|UNK|NSQ|Other|/|\\+", !!as.name(colname)))
+  list.ecdc.variants <- ecdcdata%>% ungroup() %>% select(!!variant_colname) %>% distinct %>% filter(!grepl("SGTF|XF|XD|UNK|NSQ|Other|/|\\+", !!as.name(variant_colname)))
   ecdc.variants <- unlist(list.ecdc.variants, use.names = FALSE)
   ##Download SARS-CoV-2 genomes from NCBI (Europe) only for list of ecdc variant
   myarg <- paste0('download virus genome taxon sars-cov-2 --host human --geo-location europe --complete-only --exclude-cds --exclude-protein --lineage ', ecdc.variants)
   for(i in 1:length(myarg)){
-    system2(command=paste0("./",prefix,"/bin/datasets"), args=paste0(myarg[i], ' --filename ncbi_dataset', i, '.zip'))
+    system2(command=path_dataset, args=paste0(myarg[i], ' --filename ncbi_dataset', i, '.zip'))
     system2("unzip", args = c("-o", paste0('ncbi_dataset', i ,'.zip'), "-d", paste0('ncbi_dataset', i)), stdout = TRUE)
     if (file.exists(paste0('ncbi_dataset', i, '/ncbi_dataset/data/data_report.jsonl'))) {
       myarg2 <- paste0('tsv virus-genome --inputfile ncbi_dataset', i,'/ncbi_dataset/data/data_report.jsonl --fields accession,biosample-acc,virus-pangolin,geo-location,isolate-collection-date,nucleotide-completeness')
-      system2(command=paste0("./",prefix,"/bin/dataformat"), args=myarg2, stdout=paste0('data_report_formated-lineage', i,'.tsv'))
+      system2(command=path_dataformat, args=myarg2, stdout=paste0('data_report_formated-lineage', i,'.tsv'))
     }
   }
   ##Rbind all ncbi metadata files for each variants
@@ -44,8 +46,8 @@ download_genomic_data <- function(ecdcdata, colname,prefix) {
   writeXStringSet(NCBI.genomes.filter, "genomic_filter.fna")
 
   ###NextClade - Parameters and launch
-  system2(command=paste0("./",prefix,"/bin/nextclade"), args='dataset get --name sars-cov-2 --output-dir data/sars-cov-2')
-  system2(command=paste0("./",prefix,"/bin/nextclade"), args='run -D data/sars-cov-2 --input-root-seq data/sars-cov-2/reference.fasta --input-tree data/sars-cov-2/tree.json --input-qc-config data/sars-cov-2/qc.json --input-gene-map data/sars-cov-2/genemap.gff --output-all Nextclade_results genomic_filter.fna')
+  system2(command=path_nextclade, args='dataset get --name sars-cov-2 --output-dir data/sars-cov-2')
+  system2(command=path_nextclade, args='run -D data/sars-cov-2 --input-root-seq data/sars-cov-2/reference.fasta --input-tree data/sars-cov-2/tree.json --input-qc-config data/sars-cov-2/qc.json --input-gene-map data/sars-cov-2/genemap.gff --output-all Nextclade_results genomic_filter.fna')
   ##Load NextClade file and NCBI metadata
   nextclade.res <- read.table('Nextclade_results/nextclade.tsv', sep='\t', header=TRUE)
   genomic_data <- merge(x=nextclade.res, y=ncbi_metadata.final, by.x='seqName', by.y='Accession', sort = TRUE)
