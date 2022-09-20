@@ -4,7 +4,14 @@
 \alias{select_mutation}
 \title{Title}
 \usage{
-select_mutation(data, dateStart, dateEnd, count, number)
+select_mutation(
+  data,
+  dateStart,
+  dateEnd,
+  var_names_count,
+  var_names_time,
+  number
+)
 }
 \arguments{
 \item{number}{}

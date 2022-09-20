@@ -4,18 +4,24 @@
 \alias{add_genomic_data}
 \title{Merge the metadata and genomic_data by the col_merge.}
 \usage{
-add_genomic_data(metadata, genomic_data, col_merge, count, time, mutation = T)
+add_genomic_data(
+  metadata,
+  genomic_data,
+  var_names_merge,
+  var_names_count,
+  var_names_time
+)
 }
 \arguments{
 \item{metadata}{the dataset metadata containing the column col_merge}
 
 \item{genomic_data}{The dataset containing the substitutions, deletions and missing data. The form of this dataset is based on the output of nextclade and differents mutation.}
 
+\item{var_names_count}{the name of the column used to desaggregate the metadata}
+
+\item{var_names_time}{the name of the column where the dates are found format = "\%Y-\%m-\%d"}
+
 \item{col_merge}{The name of the column that will be used to merge the data}
-
-\item{count}{the name of the column used to desaggregate the metadata}
-
-\item{time}{the name of the column where the dates are found format = "\%Y-\%m-\%d"}
 
 \item{mutation}{}
 }

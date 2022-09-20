@@ -6,7 +6,7 @@
 \usage{
 download_genomic_data(
   ecdcdata,
-  variant_colname,
+  var_names_variant,
   path_dataformat,
   path_dataset,
   path_nextclade

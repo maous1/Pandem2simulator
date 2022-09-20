@@ -4,7 +4,7 @@
 \alias{mutation_regression}
 \title{Title}
 \usage{
-mutation_regression(data, numero_mutation, mutation, dateEnd)
+mutation_regression(data, numero_mutation, mutation, dateEnd, var_names_time)
 }
 \arguments{
 \item{mutation}{}
