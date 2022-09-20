@@ -7,10 +7,10 @@
 simulator(
   trainset,
   testset,
-  time,
-  geolocalisation,
-  outcome,
-  count,
+  var_names_time,
+  var_names_geolocalisation,
+  var_names_outcome,
+  var_names_count,
   factor,
   bymonth = T
 )
@@ -20,13 +20,13 @@ simulator(
 
 \item{testset}{the dataset to which we will add a metadata}
 
-\item{time}{the name of the column where the dates are found format = "\%Y-\%m-\%d"}
+\item{var_names_time}{the name of the column where the dates are found format = "\%Y-\%m-\%d"}
 
-\item{geolocalisation}{the name of the column where the different regions are located}
+\item{var_names_geolocalisation}{the name of the column where the different regions are located}
 
-\item{outcome}{the name of the trainset column where the metadata to be added to the testset is located}
+\item{var_names_outcome}{the name of the trainset column where the metadata to be added to the testset is located}
 
-\item{count}{the name of the column used to desaggregate the data}
+\item{var_names_count}{the name of the column used to desaggregate the data}
 
 \item{factor}{The number of sequence used by time for the trainset to reduce the execution time}
 

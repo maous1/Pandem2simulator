@@ -22,7 +22,7 @@
 #' @import rlang
 #' @importFrom splitstackshape expandRows
 
-simulator <- function(trainset, testset, var_names_time, var_names_geolocalisation, var_names_outcome, var_names_count, factor, bymonth =T) {
+simulator <- function(trainset, testset, var_names_time, var_names_geolocalisation, var_names_outcome, var_names_count, factor, bymonth = T) {
   var_names_time <- enquo(var_names_time)
   var_names_geolocalisation <- enquo(var_names_geolocalisation)
   var_names_outcome <- enquo(var_names_outcome)
@@ -54,12 +54,12 @@ simulator <- function(trainset, testset, var_names_time, var_names_geolocalisati
   }
 
   if (!any(names(trainset) %in% as_label(var_names_count))) {
-    if (!any(names(testset) %in%  as_label(var_names_count))) {
+    if (!any(names(testset) %in% as_label(var_names_count))) {
       stop("error : wrong count in testset and trainset")
     }
     stop("error : wrong count in  trainset")
   }
-  if (!any(names(testset) %in%  as_label(var_names_count))) {
+  if (!any(names(testset) %in% as_label(var_names_count))) {
     stop("error : wrong count in testset")
   }
 
@@ -67,7 +67,9 @@ simulator <- function(trainset, testset, var_names_time, var_names_geolocalisati
   ####### split the dataframe in a list of dataframe (one per geolocalisation) and keep common geolocalisation
 
   trainset_list <- na.omit(trainset) %>% split(.[[as_label(var_names_geolocalisation)]])
-  testset_list <- na.omit(testset) %>% filter({{var_names_count}} >0)%>% split(.[[as_label(var_names_geolocalisation)]])
+  testset_list <- na.omit(testset) %>%
+    filter({{ var_names_count }} > 0) %>%
+    split(.[[as_label(var_names_geolocalisation)]])
 
   common_geo <- intersect(names(trainset_list), names(testset_list))
   if (is_empty(common_geo)) {
@@ -80,28 +82,28 @@ simulator <- function(trainset, testset, var_names_time, var_names_geolocalisati
 
 
   trainset_list <- trainset_list[is.element(names(trainset_list), common_geo)]
-  testset_nosimulated <- do.call(rbind,testset_list[!is.element(names(testset_list), common_geo)])
+  testset_nosimulated <- do.call(rbind, testset_list[!is.element(names(testset_list), common_geo)])
   testset_list <- testset_list[is.element(names(testset_list), common_geo)]
 
 
   ###### reduce the training dataset
 
-  trainset_reduce <- function(trainset_df, factor,var_names_count,var_names_time) {
+  trainset_reduce <- function(trainset_df, factor, var_names_count, var_names_time) {
     trainset_df <- trainset_df %>%
       group_by(!!var_names_time) %>%
       mutate(sum = sum(!!var_names_count)) %>%
-      rowwise()%>%
-      mutate({{var_names_count}} := ifelse(sum<{{factor}},{{var_names_count}},as.integer(round({{factor}} * {{var_names_count}} / sum)))) %>%
-      filter({{var_names_count}} > 0) %>%
+      rowwise() %>%
+      mutate({{ var_names_count }} := ifelse(sum < {{ factor }}, {{ var_names_count }}, as.integer(round({{ factor }} * {{ var_names_count }} / sum)))) %>%
+      filter({{ var_names_count }} > 0) %>%
       select(-sum)
     return(trainset_df)
   }
 
-  trainset_list <- map(.x = trainset_list, .f = trainset_reduce, factor = factor,var_names_count = var_names_count,var_names_time=var_names_time)
+  trainset_list <- map(.x = trainset_list, .f = trainset_reduce, factor = factor, var_names_count = var_names_count, var_names_time = var_names_time)
 
   ##### fragmentation by chunk of 1 month
-  if (bymonth ==T) {
-    splitbychunk <- function(trainset_df,var_names_time) {
+  if (bymonth == T) {
+    splitbychunk <- function(trainset_df, var_names_time) {
       trainset_df <- trainset_df %>%
         mutate(year_month = format(as.Date(!!var_names_time), "%Y-%m")) %>%
         split(.$year_month) %>%
@@ -109,8 +111,8 @@ simulator <- function(trainset, testset, var_names_time, var_names_geolocalisati
       return(trainset_df)
     }
 
-    trainset_list <- map(.x = trainset_list, .f = function(.x) splitbychunk(trainset_df = .x,var_names_time=var_names_time))
-    testset_list <- map(.x = testset_list, .f = function(.x) splitbychunk(trainset_df = .x,var_names_time=var_names_time))
+    trainset_list <- map(.x = trainset_list, .f = function(.x) splitbychunk(trainset_df = .x, var_names_time = var_names_time))
+    testset_list <- map(.x = testset_list, .f = function(.x) splitbychunk(trainset_df = .x, var_names_time = var_names_time))
     trainset_list <- unlist(trainset_list, recursive = F)
     testset_list <- unlist(testset_list, recursive = F)
 
@@ -136,7 +138,7 @@ simulator <- function(trainset, testset, var_names_time, var_names_geolocalisati
 
     trainset_1geo <- trainset_1geo %>%
       expandRows(count = as_label(var_names_count), drop = T) %>%
-      rowwise()%>%
+      rowwise() %>%
       mutate(time_num = as.numeric(as.Date(!!var_names_time))) %>%
       mutate(time_jitter = time_num + rnorm(length(time_num), 0, 3))
 
@@ -168,7 +170,7 @@ simulator <- function(trainset, testset, var_names_time, var_names_geolocalisati
     testset_1geo <- testset_1geo %>%
       select(-c(time_jitter, time_num)) %>%
       group_by_all() %>%
-      summarise({{var_names_count}} := n(), .groups = "drop")
+      summarise({{ var_names_count }} := n(), .groups = "drop")
     return(testset_1geo)
   }
 
@@ -176,4 +178,3 @@ simulator <- function(trainset, testset, var_names_time, var_names_geolocalisati
   testset_predicted <- map2_df(.x = trainset_list, .y = testset_list, .f = function(.x, .y) simulator_1geo(trainset_1geo = .x, testset_1geo = .y, var_names_time = var_names_time, var_names_outcome = var_names_outcome, var_names_count = var_names_count))
   return(testset_predicted)
 }
-

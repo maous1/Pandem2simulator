@@ -19,7 +19,7 @@
 #' @import rlang
 #' @importFrom splitstackshape expandRows
 #'
-add_genomic_data <- function(metadata, genomic_data, var_names_merge, var_names_count, var_names_time, mutation = T) {
+add_genomic_data <- function(metadata, genomic_data, var_names_merge, var_names_count, var_names_time) {
   enquo_merge <- enquo(var_names_merge)
   enquo_count <- enquo(var_names_count)
   enquo_time <- enquo(var_names_time)
@@ -36,22 +36,24 @@ add_genomic_data <- function(metadata, genomic_data, var_names_merge, var_names_
     stop("wrong count in metadata")
   }
   genomic_data <- genomic_data %>% rownames_to_column(var = "cas")
-  genomic_data_cas <- genomic_data %>%select(cas,!!enquo_time,!!enquo_merge)
-  genomic_data_cas$nb <- rep(1,length(genomic_data_cas$cas))
-  genomic_data_cas <-genomic_data_cas%>% rename({{enquo_count}} := nb)
-  case_variants_aggregated_cas <- simulator(bymonth = F,
-                                            trainset = genomic_data_cas,
-                                            testset = metadata,
-                                            var_names_time = {{var_names_time}},
-                                            var_names_geolocalisation = {{var_names_merge}},
-                                            var_names_outcome = cas,
-                                            var_names_count = {{var_names_count}},
-                                            factor = 2000)
-  genomic_data <- genomic_data %>% select(-c(year_week,{{enquo_time}},variant))
+  genomic_data_cas <- genomic_data %>% select(cas, !!enquo_time, !!enquo_merge)
+  genomic_data_cas$nb <- rep(1, length(genomic_data_cas$cas))
+  genomic_data_cas <- genomic_data_cas %>% rename({{ enquo_count }} := nb)
+  case_variants_aggregated_cas <- simulator(
+    bymonth = F,
+    trainset = genomic_data_cas,
+    testset = metadata,
+    var_names_time = {{ var_names_time }},
+    var_names_geolocalisation = {{ var_names_merge }},
+    var_names_outcome = cas,
+    var_names_count = {{ var_names_count }},
+    factor = 2000
+  )
+  genomic_data <- genomic_data %>% select(-c(year_week, {{ enquo_time }}, variant))
 
-  genomic_data_with_metadata <- case_variants_aggregated_cas %>% left_join(genomic_data,by = "cas")%>% select(-cas)
+  genomic_data_with_metadata <- case_variants_aggregated_cas %>%
+    left_join(genomic_data, by = "cas") %>%
+    select(-cas)
 
   return(genomic_data_with_metadata)
 }
-
-
