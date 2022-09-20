@@ -1,15 +1,15 @@
-#' find_mutation
+#' create_table_mutation
 #'
-#' @param allmutation
+#' @param nextclade_data
 #'
 #' @return
-#' @export
+#' @export create_table_mutation
 #'
 #' @examples
-find_mutation <- function(allmutation){
+create_table_mutation <- function(nextclade_data){
   alldata <- data.frame()
-  for (i in 1:dim(allmutation)[1]) {
-    current <- allmutation[i,]
+  for (i in 1:dim(nextclade_data)[1]) {
+    current <- nextclade_data[i,]
 
     frame <- data.frame(substitutions = unlist(strsplit(current$substitutions,split = ","))) %>%
       mutate(place = gsub("[^0-9]", "", substitutions)) %>%mutate(nucleotide = gsub("[0-9]", "", substitutions)) %>% select(-substitutions) %>%
@@ -21,7 +21,7 @@ find_mutation <- function(allmutation){
   }
 
   alldata_deletion <- data.frame()
-  for (i in 1:dim(allmutation)[1]) {
+  for (i in 1:dim(nextclade_data)[1]) {
 
     current<- alldata[i,]
     frame_deletion <-  data.frame(deletions = unlist(strsplit(current$deletions,','))) %>%

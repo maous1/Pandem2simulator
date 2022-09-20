@@ -8,13 +8,13 @@
 #'
 #' @return
 #' @export
-#' @import dplyr tibble
+#' @import dplyr tibble rlang
 #' @importFrom splitstackshape expandRows
 #' @examples
-select_mutation<- function(data,dateStart,dateEnd,count,number)
+select_mutation<- function(data,dateStart,dateEnd,var_names_count,var_names_number)
 {
   data <- mutate_all(data, ~replace(., is.na(.), "missing"))
-  currentdata <- data %>%filter(between(x = as.Date(time),left = as.Date(dateStart),right = as.Date(dateEnd))) %>% expandRows(count = count, drop = T)
+  currentdata <- data %>%filter(between(x = as.Date(time),left = as.Date(dateStart),right = as.Date(dateEnd))) %>% expandRows(count = {{var_names_count}}, drop = T)
 
 
   datavaleur <- data.frame()

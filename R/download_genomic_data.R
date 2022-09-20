@@ -16,9 +16,9 @@
 #' @import Biostrings
 #'
 #' @examples
-download_genomic_data <- function(ecdcdata, variant_colname,path_dataformat,path_dataset,path_nextclade) {
+download_genomic_data <- function(ecdcdata, var_names_variant,path_dataformat,path_dataset,path_nextclade) {
   ###Filters : 1. list of ecdc variant
-  list.ecdc.variants <- ecdcdata%>% ungroup() %>% select(!!variant_colname) %>% distinct %>% filter(!grepl("SGTF|XF|XD|UNK|NSQ|Other|/|\\+", !!as.name(variant_colname)))
+  list.ecdc.variants <- ecdcdata%>% ungroup() %>% select({{var_names_variant}}) %>% distinct %>% filter(!grepl("SGTF|XF|XD|UNK|NSQ|Other|/|\\+", !!as.name({{var_names_variant}})))
   ecdc.variants <- unlist(list.ecdc.variants, use.names = FALSE)
   ##Download SARS-CoV-2 genomes from NCBI (Europe) only for list of ecdc variant
   myarg <- paste0('download virus genome taxon sars-cov-2 --host human --geo-location europe --complete-only --exclude-cds --exclude-protein --lineage ', ecdc.variants)
