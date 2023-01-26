@@ -8,11 +8,12 @@
 #' @examples
 fx_simulator <- function(data){
 
-  packagedata <- data("fxvariant")
+  data("fxvariant")
   data$code = "BE"
-  packagedata$code = "BE"
-
-  retourne <- simulator(trainset = packagedata,
+  fxvariant$code = "BE"
+  fxvariant$cases <- fxvariant$new_cases
+  fxvariant$new_cases <- NULL
+  retourne <- simulator(trainset = fxvariant,
                         testset = data,
                         var_names_time = time,
                         var_names_geolocalisation = code,
