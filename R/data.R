@@ -68,3 +68,33 @@
 #' }
 #' @usage data(genomic_data)
 "genomic_data"
+
+#' Data set from the ECDC age group
+#'
+#' Data set from the ECDC. The dataset contains the data of Belgium between the 20th week and the 32nd week of 2021. The dataset has been formatted to be inserted in the simulator function.
+#'
+#' @docType data
+#' @keywords datasets
+#' @format A data frame :
+#' \describe{
+#'   \item{time}{The day of the year in  = "%Y-%m-%d"}
+#'   \item{cases}{The number of cases}
+#' }
+#' @usage data(fxcases)
+"fxcases"
+
+#' Data set from the ECDC age group
+#'
+#' Data set from the ECDC. The dataset contains the data of Belgium between the 20th week and the 32nd week of 2021. The dataset has been formatted to be inserted in the simulator function.
+#'
+#' @docType data
+#' @keywords datasets
+#' @format A data frame :
+#' \describe{
+#'   \item{time}{The day of the year in  = "%Y-%m-%d"}
+#'   \item{cases}{The number of cases}
+#'   \item{variant}{covid variant}
+#' }
+#' @usage data(fxvariant)
+"fxvariant"
+
