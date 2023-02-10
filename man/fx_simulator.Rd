@@ -4,7 +4,7 @@
 \alias{fx_simulator}
 \title{Title}
 \usage{
-fx_simulator(data)
+fx_simulator(data, startdate)
 }
 \arguments{
 \item{data}{}

@@ -1,14 +1,24 @@
 #' Title
 #'
 #' @param data
+#' @param startdate
 #'
 #' @return
 #' @export
-#'
+#' @import dplyr
 #' @examples
-fx_simulator <- function(data){
+fx_simulator <- function(data,startdate){
 
   data("fxvariant")
+  startdate = as.Date(startdate, format = "%Y-%m-%d" )
+  newdate = data.frame((startdate+(-2:45)*7),unique(fxvariant$time))
+
+  colnames(newdate) <- c("new","time")
+  fxvariant <- fxvariant %>% left_join(newdate)
+
+  fxvariant$time<-fxvariant$new
+  fxvariant$new <- NULL
+
   data$code = "BE"
   fxvariant$code = "BE"
   fxvariant$cases <- fxvariant$new_cases
